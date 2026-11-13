@@ -7,7 +7,7 @@ const url_base = 'https://api.unsplash.com'
 const favoritos = document.querySelector("#favoritos");
 const filtroCategorias = document.querySelector("#filtroCategorias");
 const inputCategoria = document.querySelector("#inputCategorias");
-const listaCategorias = document.querySelector("#listaCategorias");
+const listaCategorias = document.querySelectorAll("#listaCategorias li"); //almacenamos TODOS los elementos li de #listaCategorias.
 const containerGaleria = document.querySelector("#containerGaleria");
 
 
@@ -19,25 +19,29 @@ const containerGaleria = document.querySelector("#containerGaleria");
 
 /*1- Llamar a la API.*/
 
-const llamarApi = async (/*busqueda*/) => {
+/* Así es como lo teniamos antes: const response = await fetch(url_base, {
+Tambien nos faltaba return de const data.*/
+const llamarApi = async (busqueda) => {
     try {
-        /*const response = await fetch(`${url_base}/search/photos?query=busqueda, {*/
-        const response = await fetch(url_base, {
-            headers: {
-                Authorization: `Client-ID ${url_key}`
-            }
-        })
+        const response = await fetch(`${url_base}/search/photos?query=${busqueda}`,
+            {
+                headers: {
+                    Authorization: `Client-ID ${url_key}` //Aquí sobraban espacios en Client - ID
+                }
+            })
         if (!response.ok) {
             throw new Error(response.status)
         }
         const data = await response.json();
+        //console.log(data)
+        return data
 
     } catch (error) {
         return
     }
 }
-llamarApi()
-console.log(llamarApi());
+// llamarApi()
+// console.log(llamarApi('naturaleza'));
 
 
 
@@ -64,6 +68,17 @@ console.log(llamarApi());
 -Conectar con la API.
 -Recibir y almacenar las fotografías.
 -Mostrar las tres categorías de imagenes. */
+
+const pintarCategorias = () => {
+    listaCategorias.forEach((categoria) => {
+        // console.log(categoria.textContent)
+        llamarApi(categoria.textContent) //recorremos listaCategorias y le pasamos el contenido de texto a la funcion llamarApi
+    });
+        /* SIGUIENTE PASO:
+         Recoger la respuesta que devuelve llamarApi para cada categoría.
+         Después, guardar esas fotos y pintarlas en el HTML. */
+}
+pintarCategorias()
 
 
 

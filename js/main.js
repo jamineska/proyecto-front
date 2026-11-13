@@ -47,9 +47,7 @@ console.log(llamarApi());
 -Función general para mostrar imagenes en cualquier espacio de la web.
 -Se reutilizará para galería principal, cateorias y favoritos. */
 
-const pintarGaleria = () => {
 
-}
 
 
 

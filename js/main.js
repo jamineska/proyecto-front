@@ -1,6 +1,6 @@
 //VARIABLES
 const url_key = 'S0SPXGCuvujnz1b_8l2o4UmZKLDVQOBIzzHw201v2Vc'; //variable para llamar a la API
-const url_base = 'https://api.unsplash.com'
+const url_base = 'https://api.unsplash.com/'
 
 
 //capturar elementos
@@ -12,8 +12,6 @@ const containerGaleria = document.querySelector("#containerGaleria");
 
 
 //EVENTOS
-
-
 
 //FUNCIONES
 //llamar a la API
@@ -50,13 +48,8 @@ let galerias = JSON.parse(localStorage.getItem("galeria")) || [];
 }*/
 
 
-//Pintar Main
 
 
-try {
-    
-} catch (error) {
-    
-}
+
 
 

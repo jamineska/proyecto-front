@@ -1,28 +1,40 @@
 <!DOCTYPE html>
 <html lang="es-ES">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galería</title>
     <link rel="stylesheet" href="css/main.css">
 </head>
+
 <body>
     <!--cabecera-->
     <header>
-        <!--buscador-->
-        <nav>
-            <!--menu-->
-            <ul>
-                <li></li>
-            </ul>
-        </nav>
         <!--favoritos-->
         <div class="favoritos" id="favoritos"></div>
 
+        <!--filtros categorias-->
+        <nav id="filtroCategorias" class="filtroCategorias">
+            <!--buscador-->
+            <input type="text" placeholder="buscar" id="inputCategorias">
+            <ul id="listaCategorias" class="listaCategorias">
+                <!--luego haremos links-->
+                <li>Naturaleza</li>
+                <li>PLaya</li>
+                <li>Casas Rurales</li>
+            </ul>
+        </nav>
+
+    </header>
     <main>
         <!--Sección galeria-->
 
-        <section class="container" id="nuestrGaleria"> Nuestra Galeria</section>
+        <section class="containerGaleria" id="containerGaleria">
+            <div class="imagenesGaleria"></div>
+            <div class="imagenesGaleria"></div>
+            <div class="imagenesGaleria"></div>
+        </section>
 
 
     </main>
@@ -35,4 +47,5 @@
     </footer>
     <script src="js/main.js"></script>
 </body>
+
 </html>

@@ -16,9 +16,12 @@ const containerGaleria = document.querySelector("#containerGaleria");
 
 
 //FUNCIONES
-//llamar a la API
-const llamarApi = async () => {
+
+/*1- Llamar a la API.*/
+
+const llamarApi = async (/*busqueda*/) => {
     try {
+        /*const response = await fetch(`${url_base}/search/photos?query=busqueda, {*/
         const response = await fetch(url_base, {
             headers: {
                 Authorization: `Client-ID ${url_key}`
@@ -36,27 +39,47 @@ const llamarApi = async () => {
 llamarApi()
 console.log(llamarApi());
 
-//pintar galería
+
+
+
+
+/* 2- Pintar Galeria.
+-Función general para mostrar imagenes en cualquier espacio de la web.
+-Se reutilizará para galería principal, cateorias y favoritos. */
+
 const pintarGaleria = () => {
 
 }
 
-//FAVORITOS
-//local storage
-let galerias = JSON.parse(localStorage.getItem("galeria")) || [];
-//activar botón
-//pintar favoritos
-/*const pintarFavoritos = (){
-}*/
 
 
-//Pintar Main
 
 
-try {
-    
-} catch (error) {
-    
-}
+/* 3- Crear Tarjeta.
+-Generar la estructura de cada fotografia.
+-Incluir imagen, informaciónn y botón para agregar//eliminar de favoritos. */
+
+
+
+
+/* 4- Pintar Categorías.
+-Conectar con la API.
+-Recibir y almacenar las fotografías.
+-Mostrar las tres categorías de imagenes. */
+
+
+
+
+/* 5- Buscador.
+-Obtener texto del buscador(categoria).
+-Realizar la busqueda en API por categorias. */
+
+
+
+
+/* 6- Filtrar Fotos.
+-Filtrar por orientación: Imagenes horizontales, verticales y todas. */
+
+
 
 

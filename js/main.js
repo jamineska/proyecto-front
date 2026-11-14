@@ -28,16 +28,14 @@ const galeriaFavoritos = document.querySelector("#galeria-favoritos");
 
 //EVENTOS
 
-
-
 //FUNCIONES
 
 /*1- Llamar a la API.*/
 
 const llamarApi = async (busqueda, pagina = 1) => {
-    try {
-        const urlPeticion = `${url_base}/search/photos?query=${encodeURIComponent(busqueda)}&page=${pagina}&per_page=12`; //query palabra a buscar page la página y per_page fotos por página, que hemos elegido 12
-
+    try { //voy a comentar esta linea para que funcione la parte de categorias. (jamile)
+        //const urlPeticion = `${url_base}/search/photos?query=${encodeURIComponent(busqueda)}&page=${pagina}&per_page=12`; //query palabra a buscar page la página y per_page fotos por página, que hemos elegido 12
+        const urlPeticion = `${url_base}?query=${encodeURIComponent(busqueda)}&page=${pagina}&per_page=12`;
         const response = await fetch(urlPeticion, {
             headers: {
                 Authorization: `Client-ID ${url_key}`
@@ -76,47 +74,79 @@ llamarApi("music").then(fotos => console.log(fotos));
 -Incluir imagen, informaciónn y botón para agregar//eliminar de favoritos. */
 
 
+//inicio sección Categorías (rama: jamile) (●'◡'●). Parte visual y dinámico de la página principal de la aplicación.
+/* 4- Pintar Categorías, conectar con la API, recibir y almacenar las fotografías, Mostrar las tres categorías de imagenes. */
 
+// Función para pintar las fotos en #galeria-resultados
+const pintarGaleria = (fotos) => {
+    galeriaResultados.innerHTML = "";
 
-/* 4- Pintar Categorías.
--Conectar con la API.
--Recibir y almacenar las fotografías.
--Mostrar las tres categorías de imagenes. */
+    if (!fotos || fotos.length === 0) {
+        mensajeResultados.textContent = "No se encontraron imágenes para esta categoría.";
+        return;
+    }
 
-const pintarCategorias = () => {
-    //recorremos listaCategorias(elementos <li>)  en cada vuelta trabaja con un <li> distinto
-    listaCategorias.forEach(async (categoria) => {
-        //almacenamos el nombre de la categoria ej.'naturaleza'
-        const nombreCategoria = categoria.textContent;
-        // console.log(categoria.textContent)
+    mensajeResultados.textContent = `Mostrando ${fotos.length} imágenes`;
 
-        //pedimos a la api las fotos relacionadas con esa categoria
-        const imagenes = await llamarApi(nombreCategoria);
-        // console.log(imagenes)
-        //imagenes es un array de objetos, cada objeto es una imagen de la categoria.
+    fotos.forEach((foto) => {
+        const tarjeta = document.createElement("article");
+        tarjeta.classList.add("tarjeta-foto");
 
-        //almacenamos en imagenesPorCategoria(objeto) todas las imagenes de cada categoria.(el array completo)
-        imagenesPorCategoria[nombreCategoria] = imagenes;
+        tarjeta.innerHTML = `
+            <img src="${foto.urls.small}" alt="${foto.alt_description || 'Fotografía de Unsplash'}" loading="lazy">
+            <div class="info-foto">
+                <span>${foto.user.name}</span>
+                <button class="btn-favorito" data-id="${foto.id}" aria-label="Añadir a favoritos">🤍</button>
+            </div>
+        `;
 
-        // Elegimos una foto al azar para mostrarla como imagen principal.
-        const indiceDeArrayImagenesAleatorio = Math.floor(Math.random() * imagenes.length);
-        const objetoImagenAleatoria = imagenes[indiceDeArrayImagenesAleatorio];
-        // console.log(objetoImagenAleatoria)
-        // console.log(objetoImagenAleatoria.links.html)
-        // console.log(objetoImagenAleatoria.urls.raw)
-
-
-        // Creamos una etiqueta <img> y la añade a los <li>.
-        const imagenHTML = document.createElement("IMG");
-        //usamos url de tamaño pequeño y alt(lo he encontrado en el objetoImagenAleatoria en consola)
-        imagenHTML.src = objetoImagenAleatoria.urls.small;
-        imagenHTML.alt = objetoImagenAleatoria.alt_description;
-
-        //metemos la etiqueta IMG dentro de <li> (cada categoria)
-        categoria.appendChild(imagenHTML);
+        galeriaResultados.append(tarjeta);
     });
+};
+
+// Función para cargar las fotos de una categoría
+const cargarCategoria = async (categoria) => {
+    mensajeResultados.textContent = "Cargando imágenes...";
+
+// Si ya pedimos esta categoría antes, la usamos desde imagenesPorCategoria sin volver a gastar API
+if (imagenesPorCategoria[categoria]) {
+        pintarGaleria(imagenesPorCategoria[categoria]);
+        return;
+    }
+
+ // Si es la primera vez, llamamos a la función llamarApi 
+ const fotos = await llamarApi(categoria, 1);
+
+    if (fotos && fotos.length > 0) {
+        imagenesPorCategoria[categoria] = fotos; // Guardamos en caché
+        pintarGaleria(fotos);
+    } else {
+        mensajeResultados.textContent = "No se pudieron cargar las imágenes.";
+    }
+};
+
+// Eventos click para los 3 botones de categoría (.boton-categoria)
+botonesCategoria.forEach((boton) => {
+    boton.addEventListener("click", () => {
+        const categoriaSeleccionada = boton.dataset.categoria; // 'nature', 'technology' o 'people'
+
+// Marcamos visualmente el botón activo
+        botonesCategoria.forEach((btn) => btn.classList.remove("activa"));
+        boton.classList.add("activa");
+
+// Cargamos y pintamos sus fotos
+        cargarCategoria(categoriaSeleccionada);
+    });
+});
+
+
+// Carga inicial al entrar en la app (primera categoría por defecto: "nature")
+if (botonesCategoria.length > 0) {
+    botonesCategoria[0].classList.add("activa");
+    cargarCategoria(botonesCategoria[0].dataset.categoria);
 }
-pintarCategorias()
+
+//fin sección Categorías (rama: jamile)
 
 
 /* 5- Buscador.
@@ -124,10 +154,19 @@ pintarCategorias()
 -Realizar la busqueda en API por categorias. */
 
  
-
-
 /* 6- Filtrar Fotos
 -Filtrar por orientación: Imagenes horizontales, verticales y todas. */
+
+//FAVORITOS
+//local storage
+let favorito = JSON.parse(localStorage.getItem("favoritos")) || [];
+//activar botón
+//pintar favoritos
+/*const pintarFavoritos = (){
+}*/
+
+
+
 
 
 

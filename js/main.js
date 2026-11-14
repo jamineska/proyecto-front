@@ -23,6 +23,9 @@ const seccionFavoritos = document.querySelector("#seccion-favoritos");
 const mensajeFavoritos = document.querySelector("#mensaje-favoritos");
 const galeriaFavoritos = document.querySelector("#galeria-favoritos");
 
+
+
+
 //EVENTOS
 
 //FUNCIONES
@@ -30,8 +33,7 @@ const galeriaFavoritos = document.querySelector("#galeria-favoritos");
 /*1- Llamar a la API.*/
 
 const llamarApi = async (busqueda, pagina = 1) => {
-    try {
-        //hize un pequeño cambio para que funcione mi parte. Nota*: por favor actualizar esta parte, en este caso Oliver
+    try { //voy a comentar esta linea para que funcione la parte de categorias. (jamile)
         //const urlPeticion = `${url_base}/search/photos?query=${encodeURIComponent(busqueda)}&page=${pagina}&per_page=12`; //query palabra a buscar page la página y per_page fotos por página, que hemos elegido 12
         const urlPeticion = `${url_base}?query=${encodeURIComponent(busqueda)}&page=${pagina}&per_page=12`;
         const response = await fetch(urlPeticion, {
@@ -57,9 +59,14 @@ llamarApi("agua").then(fotos => console.log(fotos));
 llamarApi("music").then(fotos => console.log(fotos));
 
 
+
+
+
 /* 2- Pintar Galeria.
 -Función general para mostrar imagenes en cualquier espacio de la web.
 -Se reutilizará para galería principal, cateorias y favoritos. */
+
+
 
 
 /* 3- Crear Tarjeta.

@@ -1,48 +1,80 @@
 <!DOCTYPE html>
-<html lang="es-ES">
-
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galería</title>
-    <link rel="stylesheet" href="css/main.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galería de imágenes</title>
+  <link rel="stylesheet" href="css/main.css">
+
 </head>
-
 <body>
-    <!--cabecera-->
-    <header>
-        <!--favoritos-->
-        <div class="favoritos" id="favoritos"></div>
 
-        <!--filtros categorias-->
-        <nav id="filtroCategorias" class="filtroCategorias">
-            <!--buscador-->
-            <input type="text" placeholder="buscar" id="inputCategorias">
-            <ul id="listaCategorias" class="listaCategorias">
-                <!--luego haremos links-->
-                <li>Naturaleza</li>
-                <li>PLaya</li>
-                <li>Casas Rurales</li>
-            </ul>
+  <!-- CABECERA: título y menú para cambiar de sección -->
+  <header>
+    <h1>Galería de imágenes</h1>
+    <nav>
+      <button id="boton-inicio">Inicio</button>
+      <button id="boton-favoritos">Favoritos (<span id="contador-favoritos">0</span>)</button> <!-- en el span este es donde haremos el contador de favoritos -->
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- SECCIÓN DE INICIO: categorías, buscador y resultados -->
+    <section id="seccion-inicio">
+
+      <!-- Las 3 categorías -->
+      <section>
+        <h2>Categorías</h2>
+        <button class="boton-categoria" data-categoria="nature">Naturaleza</button> <!-- el valor de data-categoria es la palabra que se buscará en Unsplash -->
+        <button class="boton-categoria" data-categoria="technology">Tecnología</button>
+        <button class="boton-categoria" data-categoria="people">Personas</button>
+      </section>
+
+      <!-- Buscador y filtro de orientación -->
+      <section>
+        <h2>Buscar imágenes</h2>
+        <form id="formulario-busqueda" novalidate>
+          <input type="text" id="campo-busqueda" placeholder="¡Busquemos algo interesante!">
+          <p id="mensaje-error-busqueda"></p>
+
+          <label for="selector-orientacion">Orientación</label>
+          <select id="selector-orientacion">
+            <option value="">Todas</option>
+            <option value="portrait">Vertical</option> <!-- los value son los mismos que la api de Unsplash -->
+            <option value="landscape">Horizontal</option>
+          </select>
+
+          <button>Buscar</button>
+        </form>
+      </section>
+
+      <!-- Resultados y paginación -->
+      <section>
+        <h2>Resultados</h2>
+        <p id="mensaje-resultados"></p>
+        <div id="galeria-resultados"></div>
+
+        <nav>
+          <button id="boton-pagina-anterior">Anterior</button>
+          <span id="texto-numero-pagina">Página 1</span> <!-- aquí irán todas las páginas, en el span (1,2,3...) -->
+          <button id="boton-pagina-siguiente">Siguiente</button>
         </nav>
+      </section>
 
-    </header>
-    <main>
-        <!--Sección galeria-->
+    </section>
 
-        <section class="containerGaleria" id="containerGaleria">
-            <div class="imagenesGaleria"></div>
-            <div class="imagenesGaleria"></div>
-            <div class="imagenesGaleria"></div>
-        </section>
+    <!-- SECCIÓN DE FAVORITOS: empieza oculta -->
+    <section id="seccion-favoritos" hidden> <!-- luego se activa esta sección -->
+      <h2>Mis favoritos</h2>
+      <p id="mensaje-favoritos"></p>
+      <div id="galeria-favoritos"></div>
+    </section>
 
+  </main>
 
-    </main>
-
-
-
-    <footer>
-        <p>&copy; 2026 Registrate en el club. Todos los derechos reservados.</p>
+  <footer>
+        <p>&copy; 2026 Proyecto grupal. Todos los derechos reservados.</p>
         <p><a href="mailto:contacto@mipaginaweb.com">contacto@mipaginaweb.com</a></p>
     </footer>
     <script src="js/main.js"></script>

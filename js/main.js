@@ -5,11 +5,23 @@ const imagenesPorCategoria = {}; //objeto que almacena todas las imagenes de cad
 
 
 //capturar elementos
-const favoritos = document.querySelector("#favoritos");
-const filtroCategorias = document.querySelector("#filtroCategorias");
-const inputCategoria = document.querySelector("#inputCategorias");
-const listaCategorias = document.querySelectorAll("#listaCategorias li"); //almacenamos TODOS los elementos li de #listaCategorias.
-const containerGaleria = document.querySelector("#containerGaleria");
+const botonInicio = document.querySelector("#boton-inicio");
+const botonFavoritos = document.querySelector("#boton-favoritos");
+const contadorFavoritos = document.querySelector("#contador-favoritos");
+const botonesCategoria = document.querySelectorAll(".boton-categoria");
+const formularioBusqueda = document.querySelector("#formulario-busqueda");
+const campoBusqueda = document.querySelector("#campo-busqueda");
+const mensajeErrorBusqueda = document.querySelector("#mensaje-error-busqueda");
+const selectorOrientacion = document.querySelector("#selector-orientacion");
+const seccionInicio = document.querySelector("#seccion-inicio");
+const mensajeResultados = document.querySelector("#mensaje-resultados");
+const galeriaResultados = document.querySelector("#galeria-resultados");
+const botonPaginaAnterior = document.querySelector("#boton-pagina-anterior");
+const textoNumeroPagina = document.querySelector("#texto-numero-pagina");
+const botonPaginaSiguiente = document.querySelector("#boton-pagina-siguiente");
+const seccionFavoritos = document.querySelector("#seccion-favoritos");
+const mensajeFavoritos = document.querySelector("#mensaje-favoritos");
+const galeriaFavoritos = document.querySelector("#galeria-favoritos");
 
 
 
@@ -22,29 +34,31 @@ const containerGaleria = document.querySelector("#containerGaleria");
 
 /*1- Llamar a la API.*/
 
-/* Así es como lo teniamos antes: const response = await fetch(url_base, {
-Tambien nos faltaba return de const data.*/
-const llamarApi = async (categoria) => {
+const llamarApi = async (busqueda, pagina = 1) => {
     try {
-        const response = await fetch(`${url_base}?query=${categoria}`,
-            {
-                headers: {
-                    Authorization: `Client-ID ${url_key}` //Aquí sobraban espacios en Client - ID
-                }
-            })
-        if (!response.ok) {
-            throw new Error(response.status)
-        }
-        const data = await response.json();
-        // console.log(data)
-        return data.results
+        const urlPeticion = `${url_base}/search/photos?query=${encodeURIComponent(busqueda)}&page=${pagina}&per_page=12`; //query palabra a buscar page la página y per_page fotos por página, que hemos elegido 12
 
+        const response = await fetch(urlPeticion, {
+            headers: {
+                Authorization: `Client-ID ${url_key}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(response.status);
+        }
+
+        const data = await response.json();
+        return data.results; // devuelve solo la lista de fotos
     } catch (error) {
-        return
+        console.error("Hay un error que estamos solucionando", error);
+        return [];
     }
-}
-// llamarApi()
-// console.log(llamarApi('naturaleza'));
+};
+
+llamarApi("nature").then(fotos => console.log(fotos)); //aquí vamos poniendo pruebas para ver que funciona
+llamarApi("agua").then(fotos => console.log(fotos));
+llamarApi("music").then(fotos => console.log(fotos));
 
 
 
@@ -109,10 +123,10 @@ pintarCategorias()
 -Obtener texto del buscador(categoria).
 -Realizar la busqueda en API por categorias. */
 
+ 
 
 
-
-/* 6- Filtrar Fotos.
+/* 6- Filtrar Fotos
 -Filtrar por orientación: Imagenes horizontales, verticales y todas. */
 
 

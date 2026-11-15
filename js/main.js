@@ -56,12 +56,12 @@ const llamarApi = async (busqueda, pagina = 1) => {
     }
 };
 
-llamarApi("nature").then(fotos => console.log(fotos)); //aquí vamos poniendo pruebas para ver que funciona
-llamarApi("agua").then(fotos => console.log(fotos));
-llamarApi("music").then(fotos => console.log(fotos));
+//llamarApi("nature").then(fotos => console.log(fotos)); //aquí vamos poniendo pruebas para ver que funciona
+//llamarApi("agua").then(fotos => console.log(fotos));
+//llamarApi("music").then(fotos => console.log(fotos));
 
 
-//inicio sección Categorías (rama: jamile) (●'◡'●). Parte visual y dinámico de la página principal de la aplicación.
+//Parte visual y dinámico de la página principal de la aplicación.
 /* 4- Pintar Categorías, conectar con la API, recibir y almacenar las fotografías, Mostrar las tres categorías de imagenes. */
 
 // Función para pintar las fotos en #galeria-resultados
@@ -135,8 +135,6 @@ if (botonesCategoria.length > 0) {
     cargarCategoria(botonesCategoria[0].dataset.categoria);
 };
 
-//fin sección Categorías (rama: jamile)
-
 
 // FAVORITO 
 //se realiza un bucle para que se pinte a toda la coleccion
@@ -150,10 +148,12 @@ function capturarBotonesFavoritos() {
             const fav = {
                 id: button.dataset.id,
                 name: cardFoto.querySelector("span").textContent,
+                src:  cardFoto.querySelector("img").src,
+                alt:  cardFoto.querySelector("img").alt,
             };
             alternarBtnFavorito(fav);
-            //console.log(fav);
-            //colorCorazonFavorito();
+            console.log(fav);
+            colorCorazonFavorito();
         });
     });
 };
@@ -170,8 +170,8 @@ const actualizarFavoritosLocalStorage = () => { //declarar funcion
 const subirFavoritosLocalStorage = () => {
     const almacenarFavoritos = localStorage.getItem("favoritos");
     if (almacenarFavoritos) {     //si existen dalos...
-        favorites = JASON.parse(almacenarFavoritos); //... almacenar en el local 
-        //colorCorazonFavorito();
+        favoritos = JSON.parse(almacenarFavoritos); //... almacenar en el local 
+        colorCorazonFavorito();
     }
 };
 function alternarBtnFavorito(fav) {
@@ -187,22 +187,65 @@ function alternarBtnFavorito(fav) {
         actualizarFavoritosLocalStorage();
     }
 };
-/*
-const colorCorazonFavorito = () => {
-    const btnFavorito = document.querySelectorAll(".btnFavorito");
-    btnFavorito.forEach(boton => {
-        const favId = boton.dataset.id;
-        const isFavorito = favoritos.come (
-            fav => fav.id === id
-            
-        );
-
-        console.log(isFavorito)
-    })
-}
-*/
 
 
+//obtenerFavoritosLocal()
+//pintarFavoritos()
+
+//(rama: jamile) (●'◡'●).
+/* Función auxiliar propia para buscar con orientación (sin modificar llamarApi) */
+const llamarApiConOrientacion = async (busqueda, pagina = 1, orientacion = "") => {
+    try {
+        let urlPeticion = `${url_base}?query=${encodeURIComponent(busqueda)}&page=${pagina}&per_page=12`;
+
+        if (orientacion !== "") {
+            urlPeticion += `&orientation=${orientacion}`;
+        }
+
+        const response = await fetch(urlPeticion, {
+            headers: {
+                Authorization: `Client-ID ${url_key}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(response.status);
+        }
+
+        const data = await response.json();
+        return data.results;
+    } catch (error) {
+        console.error("Error al buscar con orientación:", error);
+        return [];
+    }
+};
+/* 5- Buscador. -Obtener texto del buscador(categoria). -Realizar la busqueda en API por categorias. */
+let busquedaActual = "nature"; // Guarda el término activo para que la sección 6 sepa qué filtrar
+const buscarPorPalabra = async (event) => {
+    event.preventDefault(); // Evita que el formulario recargue la página
+
+    const textoBusqueda = campoBusqueda.value.trim();
+
+    // Validamos que el input no esté vacío
+    if (textoBusqueda === "") {
+        mensajeErrorBusqueda.textContent = "Por favor, escribe una palabra clave para buscar.";
+        return;
+    }
+
+    mensajeErrorBusqueda.textContent = "";
+    mensajeResultados.textContent = "Cargando imágenes...";
+
+    // Quitamos la marca activa de las categorías al hacer una búsqueda manual
+    botonesCategoria.forEach((btn) => btn.classList.remove("activa"));
+
+    busquedaActual = textoBusqueda;
+    const orientacion = selectorOrientacion.value;
+    //invocamos la función
+    const fotos = await llamarApiConOrientacion(busquedaActual, 1, orientacion);
+    pintarGalería(fotos);
+};
+
+formularioBusqueda.addEventListener("submit", buscarPorPalabra);
 
 
 
@@ -270,6 +313,11 @@ pintarImagenesPortada();
 -Obtener texto del buscador(categoria).
 -Realizar la busqueda en API por categorias. */
 
+    const orientacionSeleccionada = selectorOrientacion.value; // "", "portrait" o "landscape"
+    mensajeResultados.textContent = "Filtrando imágenes...";
+    //invocando la función 
+    const fotos = await llamarApiConOrientacion(busquedaActual, 1, orientacionSeleccionada);
+    pintarGaleria(fotos);
+};
 
-/* 6- Filtrar Fotos
--Filtrar por orientación: Imagenes horizontales, verticales y todas. */
+selectorOrientacion.addEventListener("change", filtrarPorOrientacion);

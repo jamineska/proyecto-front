@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
   <link rel="stylesheet" href="css/main.css">
 
 </head>
+
 <body>
 
   <!-- CABECERA: título y menú para cambiar de sección -->
@@ -14,7 +16,8 @@
     <h1>Galería de imágenes</h1>
     <nav>
       <button id="boton-inicio">Inicio</button>
-      <button id="boton-favoritos">Favoritos (<span id="contador-favoritos">0</span>)</button> <!-- en el span este es donde haremos el contador de favoritos -->
+      <button id="boton-favoritos">Favoritos (<span id="contador-favoritos">0</span>)</button>
+      <!-- en el span este es donde haremos el contador de favoritos -->
     </nav>
   </header>
 
@@ -26,7 +29,8 @@
       <!-- Las 3 categorías -->
       <section>
         <h2>Categorías</h2>
-        <button class="boton-categoria" data-categoria="nature">Naturaleza</button> <!-- el valor de data-categoria es la palabra que se buscará en Unsplash -->
+        <button class="boton-categoria" data-categoria="nature">Naturaleza</button>
+        <!-- el valor de data-categoria es la palabra que se buscará en Unsplash -->
         <button class="boton-categoria" data-categoria="technology">Tecnología</button>
         <button class="boton-categoria" data-categoria="people">Personas</button>
       </section>
@@ -72,10 +76,15 @@
     </section>
 
   </main>
-
+  <!-- MODAL: foto ampliada (empieza oculto) -->
+  <div id="modal-foto" hidden>
+    <button id="boton-cerrar-modal">Cerrar</button>
+    <img id="imagen-modal" alt="">
+  </div>
   <footer>
     <p>Proyecto grupal Todos los derechos reservados</p>
   </footer>
-<script src="js/main.js"></script>
+  <script src="js/main.js"></script>
 </body>
+
 </html>

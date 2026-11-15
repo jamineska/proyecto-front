@@ -192,10 +192,25 @@ function alternarBtnFavorito(fav) {
 //pintarFavoritos()
 
 //(rama: jamile) (●'◡'●).
-/* Función auxiliar propia para buscar con orientación (sin modificar llamarApi) */
+
+let busquedaActual = "nature";
+let paginaActual = 1;
+let totalPaginas = 1;
+
+/* Función auxiliar para buscar con orientación (sin modificar llamarApi) */
 const llamarApiConOrientacion = async (busqueda, pagina = 1, orientacion = "") => {
     try {
+        const terminoSeguro = busqueda && busqueda.trim() !== "" ? busqueda.trim() : "nature";
         let urlPeticion = `${url_base}?query=${encodeURIComponent(busqueda)}&page=${pagina}&per_page=12`;
+        
+        const valorLimpio = orientacion.toLowerCase().trim();
+        let orientacionApi = "";
+
+        if (valorLimpio === "vertical" || valorLimpio === "portrait") {
+            orientacionApi = "portrait";
+        } else if (valorLimpio === "horizontal" || valorLimpio === "landscape") {
+            orientacionApi = "landscape";
+        }
 
         if (orientacion !== "") {
             urlPeticion += `&orientation=${orientacion}`;
@@ -212,14 +227,29 @@ const llamarApiConOrientacion = async (busqueda, pagina = 1, orientacion = "") =
         }
 
         const data = await response.json();
-        return data.results;
+        return {
+            fotos: data.results || [],
+            total: data.total_pages || 1
+        };
+
     } catch (error) {
         console.error("Error al buscar con orientación:", error);
-        return [];
+        return { fotos: [], total: 1 };
     }
 };
-/* 5- Buscador. -Obtener texto del buscador(categoria). -Realizar la busqueda en API por categorias. */
-let busquedaActual = "nature"; // Guarda el término activo para que la sección 6 sepa qué filtrar
+
+/*Actualizar el texto de página y bloquea /desbloquea los botones */
+const actualizarInterfazPaginacion = () => {
+    textoNumeroPagina.textContent = `Página ${paginaActual} de ${totalPaginas}`;
+    botonPaginaAnterior.disabled = paginaActual <= 1;
+    botonPaginaSiguiente.disabled = paginaActual >= totalPaginas || totalPaginas === 0;
+};
+
+
+/* 5- Buscador. 
+-Obtener texto del buscador(categoria). 
+-Realizar la busqueda en API reiniciando a la página 1. */
+
 const buscarPorPalabra = async (event) => {
     event.preventDefault(); // Evita que el formulario recargue la página
 
@@ -238,10 +268,15 @@ const buscarPorPalabra = async (event) => {
     botonesCategoria.forEach((btn) => btn.classList.remove("activa"));
 
     busquedaActual = textoBusqueda;
+    paginaActual = 1;
     const orientacion = selectorOrientacion.value;
+
     //invocamos la función
-    const fotos = await llamarApiConOrientacion(busquedaActual, 1, orientacion);
-    pintarGalería(fotos);
+    const resultados = await llamarApiConOrientacion(busquedaActual, 1, orientacion);
+    totalPaginas = resultados.total;
+
+    pintarGaleria(resultados.fotos);
+    actualizarInterfazPaginacion();
 };
 
 formularioBusqueda.addEventListener("submit", buscarPorPalabra);
@@ -249,17 +284,58 @@ formularioBusqueda.addEventListener("submit", buscarPorPalabra);
 /* 6- Filtrar Fotos. -Filtrar por orientación: Imagenes horizontales, verticales y todas. */
 // Guardamos el término actual para que el filtro de orientación sepa qué palabra está buscando
 const filtrarPorOrientacion = async () => {
-    // Si hay un botón de categoría seleccionado, tomamos su categoría como término actual
-    const botonActivo = document.querySelector(".boton-categoria.activa");
+    mensajeErrorBusqueda.textContent = "";
+
+    // Si hay un botón de categoría activo, usamos su texto o dataset
+    const botonActivo = document.querySelector(".boton-categoria.activa, .boton-categoria.active");
     if (botonActivo) {
-        busquedaActual = botonActivo.dataset.categoria;
+        busquedaActual = botonActivo.dataset.categoria || botonActivo.textContent.trim();
+    }else if (campoBusqueda.value.trim() !== "") {
+        busquedaActual = campoBusqueda.value.trim();
     }
 
     const orientacionSeleccionada = selectorOrientacion.value; // "", "portrait" o "landscape"
+    paginaActual = 1;
     mensajeResultados.textContent = "Filtrando imágenes...";
+
     //invocando la función 
-    const fotos = await llamarApiConOrientacion(busquedaActual, 1, orientacionSeleccionada);
-    pintarGaleria(fotos);
+    const resultado = await llamarApiConOrientacion(busquedaActual, 1, orientacionSeleccionada);
+    totalPaginas = resultado.total;
+
+    pintarGaleria(resultado.fotos);
+    actualizarInterfazPaginacion();
 };
 
 selectorOrientacion.addEventListener("change", filtrarPorOrientacion);
+
+//7. Paginación: implementar paginación para poder navegar entre los resultados cuando haya muchas imágenes.
+const cambiarPagina = async (nuevaPagina) => {
+    const botonActivo = document.querySelector(".boton-categoria.activa, .boton-categoria.active");
+    if (botonActivo) {
+        busquedaActual = botonActivo.dataset.categoria || botonActivo.textContent.trim();
+    }
+
+    paginaActual = nuevaPagina;
+    const orientacion = selectorOrientacion.value;
+    mensajeResultados.textContent = "Cargando página...";
+
+    const resultado = await consultarUnsplash(busquedaActual, paginaActual, orientacion);
+    totalPaginas = resultado.total;
+
+    pintarGaleria(resultado.fotos);
+    actualizarInterfazPaginacion();
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+};
+
+botonPaginaAnterior.addEventListener("click", () => {
+    if (paginaActual > 1) {
+        cambiarPagina(paginaActual - 1);
+    }
+});
+
+botonPaginaSiguiente.addEventListener("click", () => {
+    if (paginaActual < totalPaginas) {
+        cambiarPagina(paginaActual + 1);
+    }
+});

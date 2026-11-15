@@ -188,7 +188,18 @@ function alternarBtnFavorito(fav) {
         actualizarFavoritosLocalStorage();
     }
 };
-
+const colorCorazonFavorito = () => {
+    const btnFavorito = document.querySelectorAll(".btnFavorito");
+    btnFavorito.forEach(boton => {
+        const idFoto = boton.dataset.id;
+        const esFavorito = favoritos.some ( //some es metodo de array 
+            fav => fav.id === idFoto
+        );
+        boton.classList.toggle("favActive", esFavorito)
+        
+        console.log(esFavorito)
+    })
+}
 
 //obtenerFavoritosLocal()
 //pintarFavoritos()

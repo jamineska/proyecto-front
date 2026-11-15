@@ -22,6 +22,7 @@ const botonPaginaSiguiente = document.querySelector("#boton-pagina-siguiente");
 const seccionFavoritos = document.querySelector("#seccion-favoritos");
 const mensajeFavoritos = document.querySelector("#mensaje-favoritos");
 const galeriaFavoritos = document.querySelector("#galeria-favoritos");
+const contenedorPortadas = document.querySelector("#contenedorPortadas");
 
 
 

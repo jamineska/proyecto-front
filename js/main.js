@@ -55,9 +55,9 @@ const llamarApi = async (busqueda, pagina = 1) => {
     }
 };
 
-llamarApi("nature").then(fotos => console.log(fotos)); //aquí vamos poniendo pruebas para ver que funciona
-llamarApi("agua").then(fotos => console.log(fotos));
-llamarApi("music").then(fotos => console.log(fotos));
+//llamarApi("nature").then(fotos => console.log(fotos)); //aquí vamos poniendo pruebas para ver que funciona
+//llamarApi("agua").then(fotos => console.log(fotos));
+//llamarApi("music").then(fotos => console.log(fotos));
 
 
 //inicio sección Categorías (rama: jamile) (●'◡'●). Parte visual y dinámico de la página principal de la aplicación.
@@ -149,10 +149,12 @@ function capturarBotonesFavoritos() {
             const fav = {
                 id: button.dataset.id,
                 name: cardFoto.querySelector("span").textContent,
+                src:  cardFoto.querySelector("img").src,
+                alt:  cardFoto.querySelector("img").alt,
             };
             alternarBtnFavorito(fav);
-            //console.log(fav);
-            //colorCorazonFavorito();
+            console.log(fav);
+            colorCorazonFavorito();
         });
     });
 };
@@ -169,8 +171,8 @@ const actualizarFavoritosLocalStorage = () => { //declarar funcion
 const subirFavoritosLocalStorage = () => {
     const almacenarFavoritos = localStorage.getItem("favoritos");
     if (almacenarFavoritos) {     //si existen dalos...
-        favorites = JASON.parse(almacenarFavoritos); //... almacenar en el local 
-        //colorCorazonFavorito();
+        favoritos = JSON.parse(almacenarFavoritos); //... almacenar en el local 
+        colorCorazonFavorito();
     }
 };
 function alternarBtnFavorito(fav) {
@@ -186,20 +188,10 @@ function alternarBtnFavorito(fav) {
         actualizarFavoritosLocalStorage();
     }
 };
-/*
-const colorCorazonFavorito = () => {
-    const btnFavorito = document.querySelectorAll(".btnFavorito");
-    btnFavorito.forEach(boton => {
-        const favId = boton.dataset.id;
-        const isFavorito = favoritos.come (
-            fav => fav.id === id
-            
-        );
 
-        console.log(isFavorito)
-    })
-}
-*/
+
+//obtenerFavoritosLocal()
+//pintarFavoritos()
 
 
 

@@ -196,7 +196,19 @@ function alternarBtnFavorito(fav) {
 
 let busquedaActual = "nature";
 let paginaActual = 1;
-let totalPaginas = 1;
+let totalPaginas = 10; // Iniciamos mayor que 1 para permitir avanzar desde la primera carga
+
+/* Función segura para leer la búsqueda o categoría activa sin devolver 'undefined' */
+const obtenerTerminoActual = () => {
+    const botonActivo = document.querySelector(".boton-categoria.activa, .boton-categoria.active");
+    if (botonActivo) {
+        return botonActivo.dataset.categoria || botonActivo.dataset.category || botonActivo.textContent.trim();
+    }
+    if (campoBusqueda && campoBusqueda.value.trim() !== "") {
+        return campoBusqueda.value.trim();
+    }
+    return busquedaActual || "nature";
+};
 
 /* Función auxiliar para buscar con orientación (sin modificar llamarApi) */
 const llamarApiConOrientacion = async (busqueda, pagina = 1, orientacion = "") => {
@@ -311,17 +323,14 @@ selectorOrientacion.addEventListener("change", filtrarPorOrientacion);
 
 //7. Paginación: implementar paginación para poder navegar entre los resultados cuando haya muchas imágenes.
 const cambiarPagina = async (nuevaPagina) => {
-    const botonActivo = document.querySelector(".boton-categoria.activa, .boton-categoria.active");
-    if (botonActivo) {
-        busquedaActual = botonActivo.dataset.categoria || botonActivo.textContent.trim();
-    }
-
+    busquedaActual = obtenerTerminoActual();
     paginaActual = nuevaPagina;
-    const orientacion = selectorOrientacion.value;
+
+    const orientacion = selectorOrientacion? selectorOrientacion.value: "";
     mensajeResultados.textContent = "Cargando página...";
 
-    const resultado = await consultarUnsplash(busquedaActual, paginaActual, orientacion);
-    totalPaginas = resultado.total;
+    const resultado = await llamarApiConOrientacion(busquedaActual, paginaActual, orientacion);
+    totalPaginas = Number (resultado.total) || 1; /* el number es para convertir el texto en numero. y el || 1 es para proteger contra errores. En caso de un error, no devolva un NaN*/
 
     pintarGaleria(resultado.fotos);
     actualizarInterfazPaginacion();
@@ -339,4 +348,16 @@ botonPaginaSiguiente.addEventListener("click", () => {
     if (paginaActual < totalPaginas) {
         cambiarPagina(paginaActual + 1);
     }
+});
+/* sincronización de botones */
+botonesCategoria.forEach((boton) => {
+    boton.addEventListener("click", async () => {
+        paginaActual = 1;
+        busquedaActual = boton.dataset.categoria || boton.dataset.category || boton.textContent.trim();
+        const orientacion = selectorOrientacion ? selectorOrientacion.value : "";
+
+        const resultado = await llamarApiConOrientacion(busquedaActual, 1, orientacion);
+        totalPaginas = Number(resultado.total) || 1;
+        actualizarInterfazPaginacion();
+    });
 });

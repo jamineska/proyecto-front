@@ -22,6 +22,7 @@ const botonPaginaSiguiente = document.querySelector("#boton-pagina-siguiente");
 const seccionFavoritos = document.querySelector("#seccion-favoritos");
 const mensajeFavoritos = document.querySelector("#mensaje-favoritos");
 const galeriaFavoritos = document.querySelector("#galeria-favoritos");
+const contenedorPortadas = document.querySelector("#contenedorPortadas");
 
 
 
@@ -246,14 +247,71 @@ const buscarPorPalabra = async (event) => {
 
 formularioBusqueda.addEventListener("submit", buscarPorPalabra);
 
-/* 6- Filtrar Fotos. -Filtrar por orientación: Imagenes horizontales, verticales y todas. */
-// Guardamos el término actual para que el filtro de orientación sepa qué palabra está buscando
-const filtrarPorOrientacion = async () => {
-    // Si hay un botón de categoría seleccionado, tomamos su categoría como término actual
-    const botonActivo = document.querySelector(".boton-categoria.activa");
-    if (botonActivo) {
-        busquedaActual = botonActivo.dataset.categoria;
-    }
+
+
+
+
+
+/* 6-. Funcion que va a recorrer los botones de categorías y va mostrar 1 imagen de cada nicho en la carga inicial de la pagina. */
+
+const pintarImagenesPortada = () => {
+    // Quitamos las imagenes anteriores si la funcion se vuelve a ejecutar.
+    contenedorPortadas.innerHTML = "";
+
+    // Recorremos los botones. Cada vuelta corresponde a una categoría.
+    botonesCategoria.forEach(async (button) => {
+        // Leemos el valor de data-categoria, por ejemplo: "nature". 
+        // dataset lo que permite es leer atributos que empiezan por 'data-'
+        const nombreCategoria = button.dataset.categoria;
+
+        // Pedimos a la api las imagenes relacionadas con esa categoria
+        const imagenes = await llamarApi(nombreCategoria);
+        // console.log(imagenes)
+        // imagenes es un array de objetos, cada objeto es una imagen de la categoria.
+
+        // Almacenamos en imagenesPorCategoria (objeto) todas las imagenes de cada categoria. (El array completo)
+        imagenesPorCategoria[nombreCategoria] = imagenes;
+
+        // Si la categoria no tiene imagenes o la peticion a la API falla, el forEach tiene que seguir trabajando con la siguiente.
+        if (!imagenes || imagenes.length === 0) return;
+
+        // Elegimos una foto al azar para mostrarla como imagen principal.
+        const indiceDeArrayImagenesAleatorio = Math.floor(Math.random() * imagenes.length);
+        const objetoImagenAleatoria = imagenes[indiceDeArrayImagenesAleatorio];
+        // console.log(objetoImagenAleatoria)
+        // console.log(objetoImagenAleatoria.links.html)
+        // console.log(objetoImagenAleatoria.urls.raw)
+
+
+        // Creamos el div (tarjeta) para poder meter texto debajo de cada imagen.
+        const tarjetaImagenPortada = document.createElement("DIV");
+        //tarjetaImagenPortada.classList.add("tarjeta"); Confirmar con CSS si la tarjeta necesita clase.
+
+        // Creamos la etiqueta <img> y le damos sus atributos.
+        const imagenHTML = document.createElement("IMG");
+        // imagenHTML.classList.add("imagenPortada"); Confirmar con CSS si la imagen necesita clase.
+        // Damos atributos src y alt por las propiedades de el objetoImagenAleatoria (visto en consola)
+        imagenHTML.src = objetoImagenAleatoria.urls.small;
+        // Si el objetoImagenAleatoria no tiene alt ----- `Portada de ${nombreCategoria}`
+        imagenHTML.alt = objetoImagenAleatoria.alt_description || `Portada de ${nombreCategoria}`;
+
+        // Creamos el texto de la categoría para ponerlo debajo de la imagen.
+        const textoCategoria = document.createElement("P");
+        textoCategoria.textContent = button.textContent;
+
+        // Metemos la imagen y el texto dentro de la tarjeta.
+        tarjetaImagenPortada.append(imagenHTML, textoCategoria);
+        // Añadimos la tarjeta al contenedor común de portadas.
+        contenedorPortadas.append(tarjetaImagenPortada);
+    });
+};
+
+// Ejecutamos la función para mostrar las portadas.
+pintarImagenesPortada();
+
+/* 5- Buscador.
+-Obtener texto del buscador(categoria).
+-Realizar la busqueda en API por categorias. */
 
     const orientacionSeleccionada = selectorOrientacion.value; // "", "portrait" o "landscape"
     mensajeResultados.textContent = "Filtrando imágenes...";

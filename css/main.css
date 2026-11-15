@@ -1,0 +1,6 @@
+/* ===== BASE ===== */
+
+/* Lo que lleve el atributo hidden queda escondido siempre, el important lo obliga y lo tiene en cuenta */
+/*[hidden] {
+    display: none !important; por ahora lo dejo comentado para que no haya posibles fallos
+} */

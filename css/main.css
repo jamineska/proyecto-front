@@ -41,6 +41,7 @@ body {
     font-family: "Jost", "Helvetica Neue", Arial, sans-serif;
     padding: 1rem;
     min-height: 100vh;
+    scroll-behavior: smooth;
 }
 
 /* Botones y campos no heredan la fuente solos: hay que decírselo */
@@ -90,11 +91,10 @@ button {
     appearance: none;
     background: transparent;
     border: none;
-    border-radius: 0;
-    color: inherit;
     cursor: pointer;
     margin: 0.7rem;
     font-size: 1.2rem;
+    text-align: left;
 }
 
 button:disabled {
@@ -107,11 +107,13 @@ button:disabled {
 /* ===== CATEGORÍAS ===== */
 .boton-categoria {
     font-size: 1rem;
-    color: var(--texto-suave);
+    color: var(--);
     border-bottom: 2px solid transparent;
     padding-bottom: 4px;
     margin-right: 1rem;
-    color: var(--acento)
+    color: var(--acento);
+    text-align: center;
+    
 }
 
 /* La clase .activa la pone el JS al pulsar una categoría */
@@ -130,7 +132,7 @@ button:disabled {
 input {
     -webkit-appearance: none;
     appearance: none;
-    font-size: 1rem; 
+    font-size: 1rem;
     color: var(--texto);
     background: transparent;
     border: none;
@@ -152,7 +154,7 @@ input:focus {
     font-size: 0.8rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    
+
 }
 
 #selector-orientacion {
@@ -251,19 +253,19 @@ section nav {
 
 #boton-pagina-anterior,
 #boton-pagina-siguiente {
-    margin: 1.5rem;
-    font-size: 2rem;
-}
- #boton-pagina-anterior:hover {
-    color: #E4572E;
+    font-size: 1rem;
+    margin-left: 25px;
+    margin-right: 25px;
 }
 
 
 #texto-numero-pagina {
-    font-size: 1.46rem;
+    font-size: 0.8rem;
     color: var(--acento);
+
+
 }
-#
+
 /* ===== MODAL (foto ampliada) ===== */
 #modal-foto {
     position: fixed;
@@ -282,7 +284,7 @@ section nav {
     max-height: 75vh;
 }
 
-footer{
+footer {
     text-align: left;
     padding: 1rem;
     border-bottom: 1px solid var(--linea);
@@ -345,13 +347,13 @@ footer{
         margin-left: 0;
     }
 
-    #formulario-busqueda > button {
+    #formulario-busqueda>button {
         grid-area: boton;
         align-self: stretch;
         margin: 0;
     }
 
-    #seccion-inicio > section:first-child {
+    #seccion-inicio>section:first-child {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
@@ -383,6 +385,17 @@ footer{
         height: 260px;
     }
 
+    #boton-pagina-anterior,
+    #boton-pagina-siguiente{
+        font-size: 1.3rem;
+        margin-left: 50px;
+        margin-right: 50px;
+    }
+
+    #texto-numero-pagina{
+        font-size: 0.8rem;
+    }
+
     footer {
         margin-top: 2rem;
     }
@@ -404,7 +417,7 @@ footer{
         justify-content: space-between;
         align-items: center;
         text-align: left;
-               
+
     }
 
     h1 {
@@ -413,29 +426,35 @@ footer{
     }
 
     header nav {
-        gap: 2rem;
+        gap: 1rem;
     }
 
     #formulario-busqueda {
         max-width: 68rem;
-        margin: 2.5rem auto;
+        margin: 2rem;
     }
 
     #campo-busqueda {
         max-width: 40rem;
     }
 
-    #seccion-inicio > section:first-child {
-        gap: 1rem;
-        margin: 2rem 0;
+    #seccion-inicio>section:first-child {
+        gap: 4rem;
     }
 
     .boton-categoria img {
-        height: 15rem;
+        height: 20rem;
+        padding: 1.1rem;
+        
     }
 
     .boton-categoria {
-        max-width: 18rem;
+        max-width: 20rem;
+        color: var(--texto);
+    }
+
+    .boton-categoria:hover {
+        color: var(--acento);
     }
 
     #galeria-resultados,
@@ -451,4 +470,28 @@ footer{
     footer {
         margin-top: 3rem;
     }
+
+    #boton-pagina-anterior:hover {
+        text-decoration: underline;
+        text-decoration-color: var(--acento);
+        text-underline-offset: 1rem;
+    }
+
+    #boton-pagina-siguiente:hover {
+        text-decoration: underline;
+        text-decoration-color: var(--acento);
+        text-underline-offset: 1rem;
+    }
+
+    #boton-pagina-anterior,
+    #boton-pagina-siguiente{
+        font-size: 2rem;
+        margin-left: 50px;
+        margin-right: 50px;
+    }
+
+    #texto-numero-pagina{
+        font-size: 1rem;
+    }
+
 }

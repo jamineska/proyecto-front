@@ -47,7 +47,7 @@
 
     <!-- Resultados y paginación -->
     <section>
-        
+
         <p id="mensaje-resultados"></p>
         <div id="galeria-resultados"></div>
         <nav>
@@ -74,9 +74,9 @@
                 <!-- el valor de data-categoria es la palabra que se buscará en Unsplash -->
                 <button class="boton-categoria" data-categoria="technology">Tecnología</button>
                 <button class="boton-categoria" data-categoria="people">Personas</button>
-                
+
             </section>
-            
+
 
             <!-- Buscador y filtro de orientación -->
 
@@ -90,7 +90,11 @@
             </section>
 
     </main>
-
+    <!-- MODAL: foto ampliada (empieza oculto) -->
+    <div id="modal-foto" hidden>
+        <button id="boton-cerrar-modal">Cerrar</button>
+        <img id="imagen-modal" alt="">
+    </div>
     <footer>
         <p>&copy Todos los derechos reservados</p>
     </footer>

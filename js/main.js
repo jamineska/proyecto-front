@@ -76,18 +76,26 @@ const pintarGaleria = (fotos) => {
     mensajeResultados.textContent = `Mostrando ${fotos.length} imágenes`;
 
     fotos.forEach((foto) => {
+        //creamos elementos contenedor de la tarjeta
         const tarjeta = document.createElement("article");
         tarjeta.classList.add("tarjeta-foto");
 
-        tarjeta.innerHTML = `
-            <img src="${foto.urls.small}" alt="${foto.alt_description || 'Fotografía de Unsplash'}" loading="lazy">
-            <div class="info-foto">
-                <span>${foto.user.name}</span>
-                <button class="btnFavorito" data-id="${foto.id}" aria-label="Añadir a favoritos">🤍</button>
-            </div>
-        `;
+        const imgtarjeta =document.createElement ("img");
+        imgtarjeta.src = foto.urls.small;
+        imgtarjeta.alt = foto.alt;
 
+        //creamos el bloque contenedor para la información texto
+        const divInfo = document.createElement ("div");
+        divInfo.classList.add ("tarjeta-info");
+
+        const boton = document.createElement ("button");
+        boton.classList.add ("btnFavorito");
+        boton.textContent = "🤍"
+       
+        divInfo.append (boton);
+        tarjeta.append (imgtarjeta, divInfo);
         galeriaResultados.append(tarjeta);
+       
         //console.log(tarjeta)
     });
     capturarBotonesFavoritos();

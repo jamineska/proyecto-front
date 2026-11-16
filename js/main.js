@@ -22,7 +22,7 @@ const botonPaginaSiguiente = document.querySelector("#boton-pagina-siguiente");
 const seccionFavoritos = document.querySelector("#seccion-favoritos");
 const mensajeFavoritos = document.querySelector("#mensaje-favoritos");
 const galeriaFavoritos = document.querySelector("#galeria-favoritos");
-const contenedorPortadas = document.querySelector("#contenedorPortadas");
+
 
 
 
@@ -129,11 +129,11 @@ botonesCategoria.forEach((boton) => {
 });
 
 
-// Carga inicial al entrar en la app (primera categoría por defecto: "nature")
-if (botonesCategoria.length > 0) {
-    botonesCategoria[0].classList.add("activa");
-    cargarCategoria(botonesCategoria[0].dataset.categoria);
-};
+// // Carga inicial al entrar en la app (primera categoría por defecto: "nature")
+// if (botonesCategoria.length > 0) {
+//     botonesCategoria[0].classList.add("activa");
+//     cargarCategoria(botonesCategoria[0].dataset.categoria);
+// };
 
 
 // FAVORITO 
@@ -392,7 +392,7 @@ botonesCategoria.forEach((boton) => {
 
 const pintarImagenesPortada = () => {
     // Quitamos las imagenes anteriores si la funcion se vuelve a ejecutar.
-    contenedorPortadas.innerHTML = "";
+    // contenedorPortadas.innerHTML = "";
 
     // Recorremos los botones. Cada vuelta corresponde a una categoría.
     botonesCategoria.forEach(async (button) => {
@@ -419,26 +419,17 @@ const pintarImagenesPortada = () => {
         // console.log(objetoImagenAleatoria.urls.raw)
 
 
-        // Creamos el div (tarjeta) para poder meter texto debajo de cada imagen.
-        const tarjetaImagenPortada = document.createElement("DIV");
-        //tarjetaImagenPortada.classList.add("tarjeta"); Confirmar con CSS si la tarjeta necesita clase.
-
         // Creamos la etiqueta <img> y le damos sus atributos.
         const imagenHTML = document.createElement("IMG");
         // imagenHTML.classList.add("imagenPortada"); Confirmar con CSS si la imagen necesita clase.
+
         // Damos atributos src y alt por las propiedades de el objetoImagenAleatoria (visto en consola)
         imagenHTML.src = objetoImagenAleatoria.urls.small;
         // Si el objetoImagenAleatoria no tiene alt ----- `Portada de ${nombreCategoria}`
         imagenHTML.alt = objetoImagenAleatoria.alt_description || `Portada de ${nombreCategoria}`;
 
-        // Creamos el texto de la categoría para ponerlo debajo de la imagen.
-        const textoCategoria = document.createElement("P");
-        textoCategoria.textContent = button.textContent;
-
-        // Metemos la imagen y el texto dentro de la tarjeta.
-        tarjetaImagenPortada.append(imagenHTML, textoCategoria);
-        // Añadimos la tarjeta al contenedor común de portadas.
-        contenedorPortadas.append(tarjetaImagenPortada);
+        // Metemos la imagen dentro de cada button.
+        button.append(imagenHTML);
     });
 };
 

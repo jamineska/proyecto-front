@@ -202,7 +202,7 @@ const colorCorazonFavorito = () => {
 }
 //capturar elementos de la seccion favoritos 
 //ej.: .cointeinerListaFavoritos / .listFavoritos 
-const carpertaFavoritos = () => { 
+/*const carpertaFavoritos = () => { 
     listaFavoritos.innetHTML = "";
     favoritos.forEach(fav) => {
         const favoriteCard = document.createElement("DIV");
@@ -215,7 +215,7 @@ const carpertaFavoritos = () => {
 
 //     })
 
-};
+}; */
 
 //(rama: jamile) (●'◡'●).
 

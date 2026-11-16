@@ -436,3 +436,4 @@ const pintarImagenesPortada = () => {
 
 // Ejecutamos la función para mostrar las portadas.
 pintarImagenesPortada();
+ 

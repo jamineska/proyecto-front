@@ -84,7 +84,7 @@ header nav button {
 }
 
 
-/* ===== BOTONES (todos): sin aspecto de botón ===== */
+/* ===== BOTONES */
 button {
     -webkit-appearance: none;
     appearance: none;
@@ -116,7 +116,6 @@ button:disabled {
 
 /* La clase .activa la pone el JS al pulsar una categoría */
 .boton-categoria.activa {
-    border-bottom-color: var(--acento);
     color: var(--texto);
 }
 
@@ -131,7 +130,7 @@ button:disabled {
 input {
     -webkit-appearance: none;
     appearance: none;
-    font-size: 1rem; /* menos de 16px hace zoom en Safari de iPhone */
+    font-size: 1rem; 
     color: var(--texto);
     background: transparent;
     border: none;
@@ -141,7 +140,7 @@ input {
     padding-bottom: 6px;
 }
 
-/* En vez de quitar el contorno, lo cambiamos por algo con estilo */
+
 input:focus {
     outline: none;
     border-bottom-color: var(--acento);
@@ -153,27 +152,30 @@ input:focus {
     font-size: 0.8rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
+    
 }
 
 #selector-orientacion {
     width: 100%;
+    font-family: "Jost", sans-serif;
     max-width: 22rem;
-    padding: 1rem;
-    margin-left: 0.8rem;
+    padding: 0.55rem 1.7rem 0.55rem 0.25rem;
     color: var(--texto);
-    font-size: 1rem;
-    background-color: #fff;
+    font-size: 0.9rem;
+    background-color: transparent;
     background-repeat: no-repeat;
     background-size: 0.3rem 0.3rem;
-    border: 1px solid var(--linea);
+    border: 0;
+    border-bottom: 1px solid var(--linea);
+    border-radius: 0;
     cursor: pointer;
-    transition: border-color 160ms ease, box-shadow 160ms ease;
+    transition: border-color 160ms ease;
     appearance: none;
     -webkit-appearance: none;
 }
 
 #selector-orientacion:hover {
-    border-color: var(--texto-suave);
+    border-bottom-color: var(--texto-suave);
 }
 
 #selector-orientacion:focus-visible {
@@ -184,6 +186,7 @@ input:focus {
 #selector-orientacion option {
     color: var(--texto);
     background-color: var(--fondo);
+    font-family: "Jost", sans-serif;
 }
 
 
@@ -238,16 +241,29 @@ input:focus {
 /* ===== PAGINACIÓN ===== */
 section nav {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    gap: 0.5rem;
+    width: fit-content;
+    max-width: 100%;
+    margin: 1.25rem auto;
 }
 
 #boton-pagina-anterior,
 #boton-pagina-siguiente {
-    font-size: 1rem;
+    margin: 1.5rem;
+    font-size: 2rem;
+}
+ #boton-pagina-anterior:hover {
+    color: #E4572E;
 }
 
 
+#texto-numero-pagina {
+    font-size: 1.46rem;
+    color: var(--acento);
+}
+#
 /* ===== MODAL (foto ampliada) ===== */
 #modal-foto {
     position: fixed;
@@ -279,9 +295,96 @@ footer{
    ========================================================= */
 @media (min-width: 600px) {
 
+    body {
+        padding: 1.5rem;
+    }
+
+    header {
+        padding: 1.25rem 0;
+    }
+
+    h1 {
+        font-size: 1.15rem;
+    }
+
+    #formulario-busqueda {
+        display: grid;
+        grid-template-areas:
+            "busqueda etiqueta boton"
+            "error selector boton";
+        grid-template-columns: minmax(0, 1fr) minmax(10rem, 14rem) auto;
+        align-items: center;
+        gap: 0.65rem 1rem;
+        max-width: 54rem;
+        margin: 1.75rem auto;
+    }
+
+    #campo-busqueda {
+        grid-area: busqueda;
+        width: 100%;
+        max-width: 27rem;
+        min-width: 0;
+        margin-top: 0;
+    }
+
+    #mensaje-error-busqueda {
+        grid-area: error;
+        color: var(--acento);
+        font-size: 0.85rem;
+    }
+
+    #formulario-busqueda label[for="selector-orientacion"] {
+        grid-area: etiqueta;
+        margin-top: 0;
+    }
+
+    #selector-orientacion {
+        grid-area: selector;
+        width: 100%;
+        max-width: none;
+        margin-left: 0;
+    }
+
+    #formulario-busqueda > button {
+        grid-area: boton;
+        align-self: stretch;
+        margin: 0;
+    }
+
+    #seccion-inicio > section:first-child {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+        margin: 1.5rem 0;
+    }
+
+    .boton-categoria {
+        flex: 1 1 9rem;
+        max-width: 14rem;
+        margin: 0.4rem;
+        text-align: center;
+    }
+
+    .boton-categoria img {
+        width: 100%;
+        height: 12rem;
+        margin-top: 0.75rem;
+        padding: 0.5rem;
+    }
+
     #galeria-resultados,
     #galeria-favoritos {
         grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
+    }
+
+    .tarjeta-foto img {
+        height: 260px;
+    }
+
+    footer {
+        margin-top: 2rem;
     }
 }
 
@@ -291,8 +394,61 @@ footer{
    ========================================================= */
 @media (min-width: 900px) {
 
+    body {
+        max-width: 1360px;
+        margin: 0 auto;
+    }
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left;
+               
+    }
+
+    h1 {
+        margin-bottom: 0;
+        font-size: 1.25rem;
+    }
+
+    header nav {
+        gap: 2rem;
+    }
+
+    #formulario-busqueda {
+        max-width: 68rem;
+        margin: 2.5rem auto;
+    }
+
+    #campo-busqueda {
+        max-width: 40rem;
+    }
+
+    #seccion-inicio > section:first-child {
+        gap: 1rem;
+        margin: 2rem 0;
+    }
+
+    .boton-categoria img {
+        height: 15rem;
+    }
+
+    .boton-categoria {
+        max-width: 18rem;
+    }
+
     #galeria-resultados,
     #galeria-favoritos {
         grid-template-columns: repeat(3, 1fr);
+        gap: 3rem;
+    }
+
+    .tarjeta-foto img {
+        height: 300px;
+    }
+
+    footer {
+        margin-top: 3rem;
     }
 }

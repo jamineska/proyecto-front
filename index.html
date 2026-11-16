@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galería de imágenes</title>
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.css"
+        integrity="sha512-x9WwyMYBnlXMNQ6kQ/Lyzu1NqIhLQKL5Oq6xByfXuRj7s9CskyCbLv/1IjqzJmXwFXWr0ov6jBV7Qbc0hh9nHg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,400;0,500;1,400&display=swap"
+        rel="stylesheet">
 
 </head>
 
@@ -20,6 +27,40 @@
             <!-- en el span este es donde haremos el contador de favoritos -->
         </nav>
     </header>
+    <section>
+
+        <form id="formulario-busqueda" novalidate>
+            <input type="text" id="campo-busqueda" placeholder="¡Busquemos algo interesante!">
+            <p id="mensaje-error-busqueda"></p>
+
+            <label for="selector-orientacion">Orientación</label>
+            <select id="selector-orientacion">
+                <option value="">Todas</option>
+                <option value="portrait">Vertical</option>
+                <!-- los value son los mismos que la api de Unsplash -->
+                <option value="landscape">Horizontal</option>
+            </select>
+
+            <button><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+    </section>
+
+    <!-- Resultados y paginación -->
+    <section>
+
+        <p id="mensaje-resultados"></p>
+        <div id="galeria-resultados"></div>
+        <nav>
+            <button id="boton-pagina-anterior">Anterior</button>
+            <span id="texto-numero-pagina">Página 1</span>
+            <!-- aquí irán todas las páginas, en el span (1,2,3...) -->
+            <button id="boton-pagina-siguiente">Siguiente</button>
+        </nav>
+
+    </section>
+
+
+    </section>
 
     <main>
 
@@ -28,61 +69,34 @@
 
             <!-- Las 3 categorías -->
             <section>
-                <h2>Categorías</h2>
+
                 <button class="boton-categoria" data-categoria="nature">Naturaleza</button>
                 <!-- el valor de data-categoria es la palabra que se buscará en Unsplash -->
                 <button class="boton-categoria" data-categoria="technology">Tecnología</button>
                 <button class="boton-categoria" data-categoria="people">Personas</button>
+
             </section>
+
 
             <!-- Buscador y filtro de orientación -->
-            <section>
-                <h2>Buscar imágenes</h2>
-                <form id="formulario-busqueda" novalidate>
-                    <input type="text" id="campo-busqueda" placeholder="¡Busquemos algo interesante!">
-                    <p id="mensaje-error-busqueda"></p>
 
-                    <label for="selector-orientacion">Orientación</label>
-                    <select id="selector-orientacion">
-                        <option value="">Todas</option>
-                        <option value="portrait">Vertical</option>
-                        <!-- los value son los mismos que la api de Unsplash -->
-                        <option value="landscape">Horizontal</option>
-                    </select>
 
-                    <button>Buscar</button>
-                </form>
+
+            <!-- SECCIÓN DE FAVORITOS: empieza oculta -->
+            <section id="seccion-favoritos" hidden> <!-- luego se activa esta sección -->
+                <h2>Mis favoritos</h2>
+                <p id="mensaje-favoritos"></p>
+                <div id="galeria-favoritos"></div>
             </section>
-
-            <!-- Resultados y paginación -->
-            <section>
-                <h2>Resultados</h2>
-                <p id="mensaje-resultados"></p>
-                <div id="galeria-resultados"></div>
-
-                <nav>
-                    <button id="boton-pagina-anterior">Anterior</button>
-                    <span id="texto-numero-pagina">Página 1</span>
-                    <!-- aquí irán todas las páginas, en el span (1,2,3...) -->
-                    <button id="boton-pagina-siguiente">Siguiente</button>
-                </nav>
-            </section>
-
-
-        </section>
-
-       
-        <!-- SECCIÓN DE FAVORITOS: empieza oculta -->
-        <section id="seccion-favoritos" hidden> <!-- luego se activa esta sección -->
-            <h2>Mis favoritos</h2>
-            <p id="mensaje-favoritos"></p>
-            <div id="galeria-favoritos"></div>
-        </section>
 
     </main>
-
+    <!-- MODAL: foto ampliada (empieza oculto) -->
+    <div id="modal-foto" hidden>
+        <button id="boton-cerrar-modal">Cerrar</button>
+        <img id="imagen-modal" alt="">
+    </div>
     <footer>
-        <p>Proyecto grupal Todos los derechos reservados</p>
+        <p>&copy Todos los derechos reservados</p>
     </footer>
     <script src="js/main.js"></script>
 </body>

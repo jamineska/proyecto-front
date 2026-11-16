@@ -1,6 +1,16 @@
 /* =========================================================
-   CSS BASE (mobile first) - solo estructura, sin colores
+   CSS BASE (mobile first) + estilo museo
    ========================================================= */
+
+/* ===== VARIABLES DE COLOR ===== */
+:root {
+    --fondo: #FAFAF7;
+    --texto: #1A1A1A;
+    --texto-suave: #77746b;
+    --acento: #E4572E;
+    --linea: #d9d6cd;
+}
+
 
 /* ===== RESET ===== */
 * {
@@ -14,16 +24,101 @@
     display: none !important;
 }
 
+/* TODAS las fotos de la página: marco con paspartú */
 img {
+    margin-top: 1rem;
     display: block;
     max-width: 100%;
+    padding: 1rem;
+    background-color: #fff;
+    border: 1px solid var(--texto);
+    object-fit: cover;
+}
+
+body {
+    background-color: var(--fondo);
+    color: var(--texto);
+    font-family: "Jost", "Helvetica Neue", Arial, sans-serif;
+    padding: 1rem;
+    min-height: 100vh;
+    scroll-behavior: smooth;
+}
+
+/* Botones y campos no heredan la fuente solos: hay que decírselo */
+button,
+input,
+select {
+    font-family: inherit;
 }
 
 
 /* ===== CABECERA ===== */
+header {
+    text-align: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--linea);
+}
+
+h1 {
+    font-size: 1rem;
+    font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: 0.8rem;
+}
+
 header nav {
     display: flex;
-    gap: 0.5rem;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+header nav button {
+    font-size: 0.9rem;
+    color: var(--texto);
+    border-bottom: 2px solid transparent;
+    padding-bottom: 2px;
+}
+
+#boton-inicio {
+    border-bottom-color: var(--acento);
+}
+
+
+/* ===== BOTONES */
+button {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    margin: 0.7rem;
+    font-size: 1.2rem;
+    text-align: left;
+}
+
+button:disabled {
+    color: var(--texto-suave);
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+/* ===== CATEGORÍAS ===== */
+.boton-categoria {
+    font-size: 1rem;
+    color: var(--);
+    border-bottom: 2px solid transparent;
+    padding-bottom: 4px;
+    margin-right: 1rem;
+    color: var(--acento);
+    text-align: center;
+    
+}
+
+/* La clase .activa la pone el JS al pulsar una categoría */
+.boton-categoria.activa {
+    color: var(--texto);
 }
 
 
@@ -32,6 +127,68 @@ header nav {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+}
+
+input {
+    -webkit-appearance: none;
+    appearance: none;
+    font-size: 1rem;
+    color: var(--texto);
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--texto);
+    border-radius: 0;
+    margin-top: 1rem;
+    padding-bottom: 6px;
+}
+
+
+input:focus {
+    outline: none;
+    border-bottom-color: var(--acento);
+}
+
+#formulario-busqueda label[for="selector-orientacion"] {
+    margin-top: 0.75rem;
+    color: var(--texto-suave);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+
+}
+
+#selector-orientacion {
+    width: 100%;
+    font-family: "Jost", sans-serif;
+    max-width: 22rem;
+    padding: 0.55rem 1.7rem 0.55rem 0.25rem;
+    color: var(--texto);
+    font-size: 0.9rem;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: 0.3rem 0.3rem;
+    border: 0;
+    border-bottom: 1px solid var(--linea);
+    border-radius: 0;
+    cursor: pointer;
+    transition: border-color 160ms ease;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+#selector-orientacion:hover {
+    border-bottom-color: var(--texto-suave);
+}
+
+#selector-orientacion:focus-visible {
+    outline: 2px solid var(--acento);
+    outline-offset: 2px;
+}
+
+#selector-orientacion option {
+    color: var(--texto);
+    background-color: var(--fondo);
+    font-family: "Jost", sans-serif;
 }
 
 
@@ -49,7 +206,6 @@ header nav {
 .tarjeta-foto img {
     width: 100%;
     height: 220px;
-    object-fit: cover;
 }
 
 .info-foto {
@@ -58,14 +214,57 @@ header nav {
     align-items: center;
 }
 
+.btnFavorito {
+    font-size: 0;
+    color: var(--texto-suave);
+    transition: color 0.2s, transform 0.2s;
+}
+
+/* Corazón vacío (\FE0E obliga a Safari a usar texto y no emoji) */
+.btnFavorito::before {
+    content: "\2661\FE0E";
+    font-size: 1.6rem;
+}
+
+.btnFavorito:hover {
+    color: var(--acento);
+    transform: scale(1.15);
+}
+
+/* Corazón activado: relleno y en naranja */
+.btnFavorito.favActive {
+    color: var(--acento);
+}
+
+.btnFavorito.favActive::before {
+    content: "\2665\FE0E";
+}
 
 /* ===== PAGINACIÓN ===== */
 section nav {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    gap: 0.5rem;
+    width: fit-content;
+    max-width: 100%;
+    margin: 1.25rem auto;
 }
 
+#boton-pagina-anterior,
+#boton-pagina-siguiente {
+    font-size: 1rem;
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+
+#texto-numero-pagina {
+    font-size: 0.8rem;
+    color: var(--acento);
+
+
+}
 
 /* ===== MODAL (foto ampliada) ===== */
 #modal-foto {
@@ -82,18 +281,123 @@ section nav {
 
 #imagen-modal {
     max-width: 100%;
-    max-height: 80vh;
+    max-height: 75vh;
 }
 
+footer {
+    text-align: left;
+    padding: 1rem;
+    border-bottom: 1px solid var(--linea);
+    border-top: 1px solid var(--linea);
+    font-size: 0.8rem;
+}
 
 /* =========================================================
    TABLET (desde 600px)
    ========================================================= */
 @media (min-width: 600px) {
 
+    body {
+        padding: 1.5rem;
+    }
+
+    header {
+        padding: 1.25rem 0;
+    }
+
+    h1 {
+        font-size: 1.15rem;
+    }
+
+    #formulario-busqueda {
+        display: grid;
+        grid-template-areas:
+            "busqueda etiqueta boton"
+            "error selector boton";
+        grid-template-columns: minmax(0, 1fr) minmax(10rem, 14rem) auto;
+        align-items: center;
+        gap: 0.65rem 1rem;
+        max-width: 54rem;
+        margin: 1.75rem auto;
+    }
+
+    #campo-busqueda {
+        grid-area: busqueda;
+        width: 100%;
+        max-width: 27rem;
+        min-width: 0;
+        margin-top: 0;
+    }
+
+    #mensaje-error-busqueda {
+        grid-area: error;
+        color: var(--acento);
+        font-size: 0.85rem;
+    }
+
+    #formulario-busqueda label[for="selector-orientacion"] {
+        grid-area: etiqueta;
+        margin-top: 0;
+    }
+
+    #selector-orientacion {
+        grid-area: selector;
+        width: 100%;
+        max-width: none;
+        margin-left: 0;
+    }
+
+    #formulario-busqueda>button {
+        grid-area: boton;
+        align-self: stretch;
+        margin: 0;
+    }
+
+    #seccion-inicio>section:first-child {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+        margin: 1.5rem 0;
+    }
+
+    .boton-categoria {
+        flex: 1 1 9rem;
+        max-width: 14rem;
+        margin: 0.4rem;
+        text-align: center;
+    }
+
+    .boton-categoria img {
+        width: 100%;
+        height: 12rem;
+        margin-top: 0.75rem;
+        padding: 0.5rem;
+    }
+
     #galeria-resultados,
     #galeria-favoritos {
         grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
+    }
+
+    .tarjeta-foto img {
+        height: 260px;
+    }
+
+    #boton-pagina-anterior,
+    #boton-pagina-siguiente{
+        font-size: 1.3rem;
+        margin-left: 50px;
+        margin-right: 50px;
+    }
+
+    #texto-numero-pagina{
+        font-size: 0.8rem;
+    }
+
+    footer {
+        margin-top: 2rem;
     }
 }
 
@@ -103,8 +407,91 @@ section nav {
    ========================================================= */
 @media (min-width: 900px) {
 
+    body {
+        max-width: 1360px;
+        margin: 0 auto;
+    }
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left;
+
+    }
+
+    h1 {
+        margin-bottom: 0;
+        font-size: 1.25rem;
+    }
+
+    header nav {
+        gap: 1rem;
+    }
+
+    #formulario-busqueda {
+        max-width: 68rem;
+        margin: 2rem;
+    }
+
+    #campo-busqueda {
+        max-width: 40rem;
+    }
+
+    #seccion-inicio>section:first-child {
+        gap: 4rem;
+    }
+
+    .boton-categoria img {
+        height: 20rem;
+        padding: 1.1rem;
+        
+    }
+
+    .boton-categoria {
+        max-width: 20rem;
+        color: var(--texto);
+    }
+
+    .boton-categoria:hover {
+        color: var(--acento);
+    }
+
     #galeria-resultados,
     #galeria-favoritos {
         grid-template-columns: repeat(3, 1fr);
+        gap: 3rem;
     }
+
+    .tarjeta-foto img {
+        height: 300px;
+    }
+
+    footer {
+        margin-top: 3rem;
+    }
+
+    #boton-pagina-anterior:hover {
+        text-decoration: underline;
+        text-decoration-color: var(--acento);
+        text-underline-offset: 1rem;
+    }
+
+    #boton-pagina-siguiente:hover {
+        text-decoration: underline;
+        text-decoration-color: var(--acento);
+        text-underline-offset: 1rem;
+    }
+
+    #boton-pagina-anterior,
+    #boton-pagina-siguiente{
+        font-size: 2rem;
+        margin-left: 50px;
+        margin-right: 50px;
+    }
+
+    #texto-numero-pagina{
+        font-size: 1rem;
+    }
+
 }

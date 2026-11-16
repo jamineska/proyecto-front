@@ -3,7 +3,6 @@ const url_key = 'S0SPXGCuvujnz1b_8l2o4UmZKLDVQOBIzzHw201v2Vc'; //variable para l
 const url_base = 'https://api.unsplash.com/search/photos'
 const imagenesPorCategoria = {}; //objeto que almacena todas las imagenes de cada categoria.
 
-
 //capturar elementos
 const botonInicio = document.querySelector("#boton-inicio");
 const botonFavoritos = document.querySelector("#boton-favoritos");
@@ -35,6 +34,16 @@ botonInicio.addEventListener('click', () => {
     }
     return recargarPaginaInicio()
 })
+
+
+botonFavoritos.addEventListener('click', () => {
+    pintarGaleriaFavoritos()
+})
+// document.addEventListener('click', (ev)=>{
+//     if(ev.target.id=="boton-favoritos") {
+//         pintarGaleriaFavoritos();
+//     }
+// })
 
 //FUNCIONES
 
@@ -144,6 +153,7 @@ document.addEventListener("click", (ev) => {
         const fav = ev.target.id; //lo identifica 
         console.log(ev.target);
         alternarBtnFavorito(fav);
+        actualizarFavoritosLocalStorage()
     };
 });
 //FUNCIONES
@@ -158,6 +168,7 @@ const traerFavoritosLocalStorage = () => {
     if (almacenarFavoritos) {     //si existen dalos...
         favoritos = JSON.parse(almacenarFavoritos); //... almacenar en el local 
     }
+    return favoritos
 };
 const alternarBtnFavorito = (fav) => {
     //buscar el indice de los favoritos 
@@ -180,7 +191,7 @@ const colorCorazonFavorito = () => {
             fav => fav === idFoto
         );
         boton.classList.toggle("favActive", esFavorito)
-        
+
         console.log(esFavorito)
     })
 };
@@ -373,7 +384,7 @@ const pintarImagenesPortada = () => {
 
         // Pedimos a la api las imagenes relacionadas con esa categoria
         const imagenes = await llamarApi(nombreCategoria);
-        console.log(imagenes)
+        // console.log(imagenes)
         // imagenes es un array de objetos, cada objeto es una imagen de la categoria.
 
         // Almacenamos en imagenesPorCategoria (objeto) todas las imagenes de cada categoria. (El array completo)
@@ -385,10 +396,10 @@ const pintarImagenesPortada = () => {
         // Elegimos una foto al azar para mostrarla como imagen principal.
         const indiceDeArrayImagenesAleatorio = Math.floor(Math.random() * imagenes.length);
         const objetoImagenAleatoria = imagenes[indiceDeArrayImagenesAleatorio];
-         //console.log(objetoImagenAleatoria)
+        //console.log(objetoImagenAleatoria)
         // console.log(objetoImagenAleatoria.links.html)
         // console.log(objetoImagenAleatoria.urls.raw)
- 
+
 
         // Creamos la etiqueta <img> y le damos sus atributos.
         const imagenHTML = document.createElement("IMG");
@@ -406,3 +417,45 @@ const pintarImagenesPortada = () => {
 
 // Ejecutamos la función para mostrar las portadas.
 pintarImagenesPortada();
+
+
+
+//Funcion para buscar imagenes por su id (necesitamos para pintarGaleriaFavoritos)
+// console.log(imagenesPorCategoria)
+const buscarImagenesporId = (id) => {
+    let imagenEncontrada
+
+    //imagenesPorCategoria es un Objeto que cada propiedad contiene un array de objetos(imagen)
+    const nombresCategorias = Object.keys(imagenesPorCategoria)
+    //console.log(nombresCategorias)
+    //nombresCategorias es un array con los nombres de las categorias
+    nombresCategorias.forEach((nombreCategoria) => {
+        const imagenes = imagenesPorCategoria[nombreCategoria]
+        //imagenes es un array de objetos con las propiedades de las imagenes de esa categoria
+        imagenes.forEach((imagen) => {
+            //cada objeto es una imagen, entonces si el id de la imagen es igual que el id que recibe la funcion
+            if (imagen.id == id) {
+                imagenEncontrada = imagen
+            }
+        });
+    });
+    return imagenEncontrada
+}
+
+
+// Funcion para pintar la galeria de favoritos
+const pintarGaleriaFavoritos = () => {
+    traerFavoritosLocalStorage();
+
+    //en imagenesFav guardaremos las imagenes de favoritos que encontremos
+    const imagenesFav = [];
+    //bucamos la imagen correspondiente de cada id en favoritos
+    favoritos.forEach((id) => {
+        const imagen = buscarImagenesporId(id);
+        return imagenesFav.push(imagen);
+    });
+
+    //pintamos las imagenes en galeria
+    pintarGaleria(imagenesFav);
+}
+

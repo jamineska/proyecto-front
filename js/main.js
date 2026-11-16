@@ -22,7 +22,6 @@ const botonPaginaSiguiente = document.querySelector("#boton-pagina-siguiente");
 const seccionFavoritos = document.querySelector("#seccion-favoritos");
 const mensajeFavoritos = document.querySelector("#mensaje-favoritos");
 const galeriaFavoritos = document.querySelector("#galeria-favoritos");
-const contenedorPortadas = document.querySelector("#contenedorPortadas");
 
 
 
@@ -63,7 +62,6 @@ const llamarApi = async (busqueda, pagina = 1) => {
 
 //Parte visual y dinámico de la página principal de la aplicación.
 /* 4- Pintar Categorías, conectar con la API, recibir y almacenar las fotografías, Mostrar las tres categorías de imagenes. */
-
 // Función para pintar las fotos en #galeria-resultados
 const pintarGaleria = (fotos) => {
     galeriaResultados.innerHTML = "";
@@ -129,11 +127,11 @@ botonesCategoria.forEach((boton) => {
 });
 
 
-// Carga inicial al entrar en la app (primera categoría por defecto: "nature")
-if (botonesCategoria.length > 0) {
-    botonesCategoria[0].classList.add("activa");
-    cargarCategoria(botonesCategoria[0].dataset.categoria);
-};
+// // Carga inicial al entrar en la app (primera categoría por defecto: "nature")
+// if (botonesCategoria.length > 0) {
+//     botonesCategoria[0].classList.add("activa");
+//     cargarCategoria(botonesCategoria[0].dataset.categoria);
+// };
 
 
 // FAVORITO 

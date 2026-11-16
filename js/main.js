@@ -204,7 +204,7 @@ const colorCorazonFavorito = () => {
 //ej.: .cointeinerListaFavoritos / .listFavoritos 
 const carpertaFavoritos = () => { 
     listaFavoritos.innetHTML = "";
-    favoritos.forEach(fav => {
+    favoritos.forEach(fav) => {
         const favoriteCard = document.createElement("DIV");
         favoriteCard = classList.add("cardFavoritos")
 

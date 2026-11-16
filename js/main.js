@@ -22,7 +22,7 @@ const botonPaginaSiguiente = document.querySelector("#boton-pagina-siguiente");
 const seccionFavoritos = document.querySelector("#seccion-favoritos");
 const mensajeFavoritos = document.querySelector("#mensaje-favoritos");
 const galeriaFavoritos = document.querySelector("#galeria-favoritos");
-const contenedorPortadas = document.querySelector("#contenedorPortadas");
+
 
 
 
@@ -63,7 +63,6 @@ const llamarApi = async (busqueda, pagina = 1) => {
 
 //Parte visual y dinámico de la página principal de la aplicación.
 /* 4- Pintar Categorías, conectar con la API, recibir y almacenar las fotografías, Mostrar las tres categorías de imagenes. */
-
 // Función para pintar las fotos en #galeria-resultados
 const pintarGaleria = (fotos) => {
     galeriaResultados.innerHTML = "";
@@ -129,11 +128,11 @@ botonesCategoria.forEach((boton) => {
 });
 
 
-// Carga inicial al entrar en la app (primera categoría por defecto: "nature")
-if (botonesCategoria.length > 0) {
-    botonesCategoria[0].classList.add("activa");
-    cargarCategoria(botonesCategoria[0].dataset.categoria);
-};
+// // Carga inicial al entrar en la app (primera categoría por defecto: "nature")
+// if (botonesCategoria.length > 0) {
+//     botonesCategoria[0].classList.add("activa");
+//     cargarCategoria(botonesCategoria[0].dataset.categoria);
+// };
 
 
 // FAVORITO 
@@ -187,6 +186,7 @@ function alternarBtnFavorito(fav) {
         actualizarFavoritosLocalStorage();
     }
 contadorFavoritos.textContent = favoritos.length;
+contadorFavoritos.textContent = favoritos.length;
 };
 const colorCorazonFavorito = () => {
     const btnFavorito = document.querySelectorAll(".btnFavorito");
@@ -202,11 +202,11 @@ const colorCorazonFavorito = () => {
 }
 //capturar elementos de la seccion favoritos 
 //ej.: .cointeinerListaFavoritos / .listFavoritos 
-/*const carpertaFavoritos = () => { 
-    listaFavoritos.innetHTML = "";
-    favoritos.forEach(fav) => {
-        const favoriteCard = document.createElement("DIV");
-        favoriteCard = classList.add("cardFavoritos")
+// const carpertaFavoritos = () => { 
+//     listaFavoritos.innetHTML = "";
+//     favoritos.forEach(fav => {
+//         const favoriteCard = document.createElement("DIV");
+//         favoriteCard = classList.add("cardFavoritos")
 
 //         const titleFavoritos = document.createElement("P");
 //         titleFavoritos.classList.add("tituloFavoritos");//se le da una clase a ese parrafo
@@ -215,7 +215,7 @@ const colorCorazonFavorito = () => {
 
 //     })
 
-}; */
+// };
 
 //(rama: jamile) (●'◡'●).
 
@@ -388,11 +388,11 @@ botonesCategoria.forEach((boton) => {
 });
 
 
-/* Funcion que va a recorrer los botones de categorías y va mostrar 1 imagen de cada nicho en la carga inicial de la pagina. */
+/* 6-. Funcion que va a recorrer los botones de categorías y va mostrar 1 imagen de cada nicho en la carga inicial de la pagina. */
 
 const pintarImagenesPortada = () => {
     // Quitamos las imagenes anteriores si la funcion se vuelve a ejecutar.
-    contenedorPortadas.innerHTML = "";
+    // contenedorPortadas.innerHTML = "";
 
     // Recorremos los botones. Cada vuelta corresponde a una categoría.
     botonesCategoria.forEach(async (button) => {
@@ -419,26 +419,17 @@ const pintarImagenesPortada = () => {
         // console.log(objetoImagenAleatoria.urls.raw)
 
 
-        // Creamos el div (tarjeta) para poder meter texto debajo de cada imagen.
-        const tarjetaImagenPortada = document.createElement("DIV");
-        //tarjetaImagenPortada.classList.add("tarjeta"); Confirmar con CSS si la tarjeta necesita clase.
-
         // Creamos la etiqueta <img> y le damos sus atributos.
         const imagenHTML = document.createElement("IMG");
         // imagenHTML.classList.add("imagenPortada"); Confirmar con CSS si la imagen necesita clase.
+
         // Damos atributos src y alt por las propiedades de el objetoImagenAleatoria (visto en consola)
         imagenHTML.src = objetoImagenAleatoria.urls.small;
         // Si el objetoImagenAleatoria no tiene alt ----- `Portada de ${nombreCategoria}`
         imagenHTML.alt = objetoImagenAleatoria.alt_description || `Portada de ${nombreCategoria}`;
 
-        // Creamos el texto de la categoría para ponerlo debajo de la imagen.
-        const textoCategoria = document.createElement("P");
-        textoCategoria.textContent = button.textContent;
-
-        // Metemos la imagen y el texto dentro de la tarjeta.
-        tarjetaImagenPortada.append(imagenHTML, textoCategoria);
-        // Añadimos la tarjeta al contenedor común de portadas.
-        contenedorPortadas.append(tarjetaImagenPortada);
+        // Metemos la imagen dentro de cada button.
+        button.append(imagenHTML);
     });
 };
 

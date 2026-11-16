@@ -402,7 +402,7 @@ const pintarImagenesPortada = () => {
 
         // Pedimos a la api las imagenes relacionadas con esa categoria
         const imagenes = await llamarApi(nombreCategoria);
-        // console.log(imagenes)
+        console.log(imagenes)
         // imagenes es un array de objetos, cada objeto es una imagen de la categoria.
 
         // Almacenamos en imagenesPorCategoria (objeto) todas las imagenes de cada categoria. (El array completo)
@@ -414,7 +414,7 @@ const pintarImagenesPortada = () => {
         // Elegimos una foto al azar para mostrarla como imagen principal.
         const indiceDeArrayImagenesAleatorio = Math.floor(Math.random() * imagenes.length);
         const objetoImagenAleatoria = imagenes[indiceDeArrayImagenesAleatorio];
-        // console.log(objetoImagenAleatoria)
+         //console.log(objetoImagenAleatoria)
         // console.log(objetoImagenAleatoria.links.html)
         // console.log(objetoImagenAleatoria.urls.raw)
 

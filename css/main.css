@@ -1,5 +1,5 @@
 /* =========================================================
-   CSS BASE (mobile first) + un poquito de estilo museo
+   CSS BASE (mobile first) + estilo museo
    ========================================================= */
 
 /* ===== VARIABLES DE COLOR ===== */
@@ -8,6 +8,7 @@
     --texto: #1A1A1A;
     --texto-suave: #77746b;
     --acento: #E4572E;
+    --linea: #d9d6cd;
 }
 
 
@@ -23,19 +24,30 @@
     display: none !important;
 }
 
+/* TODAS las fotos de la página: marco con paspartú */
 img {
+    margin-top: 1rem;
     display: block;
     max-width: 100%;
     padding: 1rem;
-    border: 1px solid black;
+    background-color: #fff;
+    border: 1px solid var(--texto);
+    object-fit: cover;
 }
 
 body {
     background-color: var(--fondo);
     color: var(--texto);
-    font-family: Georgia, "Times New Roman", serif;
-    margin: 1rem;
+    font-family: "Jost", "Helvetica Neue", Arial, sans-serif;
+    padding: 1rem;
     min-height: 100vh;
+}
+
+/* Botones y campos no heredan la fuente solos: hay que decírselo */
+button,
+input,
+select {
+    font-family: inherit;
 }
 
 
@@ -43,7 +55,7 @@ body {
 header {
     text-align: center;
     padding: 1rem;
-    border-bottom: 1px solid #d9d6cd;
+    border-bottom: 1px solid var(--linea);
 }
 
 h1 {
@@ -54,7 +66,6 @@ h1 {
     margin-bottom: 0.8rem;
 }
 
-/* Botones del menú: sin aspecto de botón */
 header nav {
     display: flex;
     justify-content: center;
@@ -62,17 +73,10 @@ header nav {
 }
 
 header nav button {
-    -webkit-appearance: none;
-    appearance: none;
-    background: none;
-    border: none;
-    border-bottom: 2px solid transparent;
-    border-radius: 0;
-    font-family: inherit;
     font-size: 0.9rem;
     color: var(--texto);
+    border-bottom: 2px solid transparent;
     padding-bottom: 2px;
-    cursor: pointer;
 }
 
 #boton-inicio {
@@ -80,21 +84,34 @@ header nav button {
 }
 
 
-/* ===== CATEGORÍAS ===== */
-.boton-categoria {
+/* ===== BOTONES (todos): sin aspecto de botón ===== */
+button {
     -webkit-appearance: none;
     appearance: none;
-    background: none;
+    background: transparent;
     border: none;
-    border-bottom: 2px solid transparent;
     border-radius: 0;
-    font-family: inherit;
+    color: inherit;
+    cursor: pointer;
+    margin: 0.7rem;
+    font-size: 1.2rem;
+}
+
+button:disabled {
+    color: var(--texto-suave);
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+/* ===== CATEGORÍAS ===== */
+.boton-categoria {
     font-size: 1rem;
     color: var(--texto-suave);
+    border-bottom: 2px solid transparent;
     padding-bottom: 4px;
     margin-right: 1rem;
-    cursor: pointer;
-    
+    color: var(--acento)
 }
 
 /* La clase .activa la pone el JS al pulsar una categoría */
@@ -112,19 +129,63 @@ header nav button {
 }
 
 input {
-    border: none;
-    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    font-size: 1rem; /* menos de 16px hace zoom en Safari de iPhone */
+    color: var(--texto);
     background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--texto);
+    border-radius: 0;
     margin-top: 1rem;
-    border-bottom: 1px solid black;
     padding-bottom: 6px;
+}
 
-}
-button {
-    border: none;
+/* En vez de quitar el contorno, lo cambiamos por algo con estilo */
+input:focus {
     outline: none;
-    background: transparent;
+    border-bottom-color: var(--acento);
 }
+
+#formulario-busqueda label[for="selector-orientacion"] {
+    margin-top: 0.75rem;
+    color: var(--texto-suave);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+#selector-orientacion {
+    width: 100%;
+    max-width: 22rem;
+    padding: 1rem;
+    margin-left: 0.8rem;
+    color: var(--texto);
+    font-size: 1rem;
+    background-color: #fff;
+    background-repeat: no-repeat;
+    background-size: 0.3rem 0.3rem;
+    border: 1px solid var(--linea);
+    cursor: pointer;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+#selector-orientacion:hover {
+    border-color: var(--texto-suave);
+}
+
+#selector-orientacion:focus-visible {
+    outline: 2px solid var(--acento);
+    outline-offset: 2px;
+}
+
+#selector-orientacion option {
+    color: var(--texto);
+    background-color: var(--fondo);
+}
+
 
 /* ===== GALERÍAS (resultados y favoritos) ===== */
 /* En móvil: una sola columna */
@@ -140,7 +201,6 @@ button {
 .tarjeta-foto img {
     width: 100%;
     height: 220px;
-    object-fit: cover;
 }
 
 .info-foto {
@@ -149,12 +209,42 @@ button {
     align-items: center;
 }
 
+.btnFavorito {
+    font-size: 0;
+    color: var(--texto-suave);
+    transition: color 0.2s, transform 0.2s;
+}
+
+/* Corazón vacío (\FE0E obliga a Safari a usar texto y no emoji) */
+.btnFavorito::before {
+    content: "\2661\FE0E";
+    font-size: 1.6rem;
+}
+
+.btnFavorito:hover {
+    color: var(--acento);
+    transform: scale(1.15);
+}
+
+/* Corazón activado: relleno y en naranja */
+.btnFavorito.favActive {
+    color: var(--acento);
+}
+
+.btnFavorito.favActive::before {
+    content: "\2665\FE0E";
+}
 
 /* ===== PAGINACIÓN ===== */
 section nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+#boton-pagina-anterior,
+#boton-pagina-siguiente {
+    font-size: 1rem;
 }
 
 
@@ -173,9 +263,16 @@ section nav {
 
 #imagen-modal {
     max-width: 100%;
-    max-height: 80vh;
+    max-height: 75vh;
 }
 
+footer{
+    text-align: left;
+    padding: 1rem;
+    border-bottom: 1px solid var(--linea);
+    border-top: 1px solid var(--linea);
+    font-size: 0.8rem;
+}
 
 /* =========================================================
    TABLET (desde 600px)

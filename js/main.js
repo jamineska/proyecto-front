@@ -29,6 +29,12 @@ const galeriaFavoritos = document.querySelector("#galeria-favoritos");
 
 
 //EVENTOS
+botonInicio.addEventListener('click', () => {
+    const recargarPaginaInicio = () => {
+        location.reload()
+    }
+    return recargarPaginaInicio()
+})
 
 //FUNCIONES
 
@@ -147,8 +153,8 @@ function capturarBotonesFavoritos() {
             const fav = {
                 id: button.dataset.id,
                 name: cardFoto.querySelector("span").textContent,
-                src:  cardFoto.querySelector("img").src,
-                alt:  cardFoto.querySelector("img").alt,
+                src: cardFoto.querySelector("img").src,
+                alt: cardFoto.querySelector("img").alt,
             };
             alternarBtnFavorito(fav);
             console.log(fav);
@@ -185,18 +191,18 @@ function alternarBtnFavorito(fav) {
         favoritos.push(fav);
         actualizarFavoritosLocalStorage();
     }
-contadorFavoritos.textContent = favoritos.length;
-contadorFavoritos.textContent = favoritos.length;
+    contadorFavoritos.textContent = favoritos.length;
+    contadorFavoritos.textContent = favoritos.length;
 };
 const colorCorazonFavorito = () => {
     const btnFavorito = document.querySelectorAll(".btnFavorito");
     btnFavorito.forEach(boton => {
         const idFoto = boton.dataset.id;
-        const esFavorito = favoritos.some ( //some es metodo de array 
+        const esFavorito = favoritos.some( //some es metodo de array 
             fav => fav.id === idFoto
         );
         boton.classList.toggle("favActive", esFavorito)
-        
+
         console.log(esFavorito)
     })
 }
@@ -241,7 +247,7 @@ const llamarApiConOrientacion = async (busqueda, pagina = 1, orientacion = "") =
     try {
         const terminoSeguro = busqueda && busqueda.trim() !== "" ? busqueda.trim() : "nature";
         let urlPeticion = `${url_base}?query=${encodeURIComponent(busqueda)}&page=${pagina}&per_page=12`;
-        
+
         const valorLimpio = orientacion.toLowerCase().trim();
         let orientacionApi = "";
 
@@ -329,7 +335,7 @@ const filtrarPorOrientacion = async () => {
     const botonActivo = document.querySelector(".boton-categoria.activa, .boton-categoria.active");
     if (botonActivo) {
         busquedaActual = botonActivo.dataset.categoria || botonActivo.textContent.trim();
-    }else if (campoBusqueda.value.trim() !== "") {
+    } else if (campoBusqueda.value.trim() !== "") {
         busquedaActual = campoBusqueda.value.trim();
     }
 
@@ -352,11 +358,11 @@ const cambiarPagina = async (nuevaPagina) => {
     busquedaActual = obtenerTerminoActual();
     paginaActual = nuevaPagina;
 
-    const orientacion = selectorOrientacion? selectorOrientacion.value: "";
+    const orientacion = selectorOrientacion ? selectorOrientacion.value : "";
     mensajeResultados.textContent = "Cargando página...";
 
     const resultado = await llamarApiConOrientacion(busquedaActual, paginaActual, orientacion);
-    totalPaginas = Number (resultado.total) || 1; /* el number es para convertir el texto en numero. y el || 1 es para proteger contra errores. En caso de un error, no devolva un NaN*/
+    totalPaginas = Number(resultado.total) || 1; /* el number es para convertir el texto en numero. y el || 1 es para proteger contra errores. En caso de un error, no devolva un NaN*/
 
     pintarGaleria(resultado.fotos);
     actualizarInterfazPaginacion();
@@ -436,4 +442,7 @@ const pintarImagenesPortada = () => {
 
 // Ejecutamos la función para mostrar las portadas.
 pintarImagenesPortada();
- 
+
+
+
+

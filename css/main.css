@@ -1,6 +1,110 @@
-/* ===== BASE ===== */
+/* =========================================================
+   CSS BASE (mobile first) - solo estructura, sin colores
+   ========================================================= */
 
-/* Lo que lleve el atributo hidden queda escondido siempre, el important lo obliga y lo tiene en cuenta */
-/*[hidden] {
-    display: none !important; por ahora lo dejo comentado para que no haya posibles fallos
-} */
+/* ===== RESET ===== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Lo que lleve el atributo hidden queda oculto siempre */
+[hidden] {
+    display: none !important;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+
+/* ===== CABECERA ===== */
+header nav {
+    display: flex;
+    gap: 0.5rem;
+}
+
+
+/* ===== BUSCADOR ===== */
+#formulario-busqueda {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+
+/* ===== GALERÍAS (resultados y favoritos) ===== */
+/* En móvil: una sola columna */
+#galeria-resultados,
+#galeria-favoritos {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+
+/* ===== TARJETA DE FOTO (la crea el JS) ===== */
+.tarjeta-foto img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.info-foto {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+/* ===== PAGINACIÓN ===== */
+section nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+/* ===== MODAL (foto ampliada) ===== */
+#modal-foto {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#imagen-modal {
+    max-width: 100%;
+    max-height: 80vh;
+}
+
+
+/* =========================================================
+   TABLET (desde 600px)
+   ========================================================= */
+@media (min-width: 600px) {
+
+    #galeria-resultados,
+    #galeria-favoritos {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+/* =========================================================
+   ESCRITORIO (desde 900px)
+   ========================================================= */
+@media (min-width: 900px) {
+
+    #galeria-resultados,
+    #galeria-favoritos {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

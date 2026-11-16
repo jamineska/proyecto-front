@@ -424,7 +424,7 @@ const pintarImagenesPortada = () => {
         // console.log(objetoImagenAleatoria)
         // console.log(objetoImagenAleatoria.links.html)
         // console.log(objetoImagenAleatoria.urls.raw)
-
+ 
 
         // Creamos la etiqueta <img> y le damos sus atributos.
         const imagenHTML = document.createElement("IMG");

@@ -22,7 +22,7 @@ const botonPaginaSiguiente = document.querySelector("#boton-pagina-siguiente");
 const seccionFavoritos = document.querySelector("#seccion-favoritos");
 const mensajeFavoritos = document.querySelector("#mensaje-favoritos");
 const galeriaFavoritos = document.querySelector("#galeria-favoritos");
-const contenedorPortadas = document.querySelector("#contenedorPortadas");
+
 
 
 
@@ -59,7 +59,6 @@ const llamarApi = async (busqueda, pagina = 1) => {
 
 //Parte visual y dinámico de la página principal de la aplicación.
 /* 4- Pintar Categorías, conectar con la API, recibir y almacenar las fotografías, Mostrar las tres categorías de imagenes. */
-
 // Función para pintar las fotos en #galeria-resultados
 const pintarGaleria = (fotos) => {
     galeriaResultados.innerHTML = "";
@@ -75,15 +74,23 @@ const pintarGaleria = (fotos) => {
         const tarjeta = document.createElement("article");
         tarjeta.classList.add("tarjeta-foto");
 
-        tarjeta.innerHTML = `
-            <img src="${foto.urls.small}" alt="${foto.alt_description || 'Fotografía de Unsplash'}" loading="lazy">
-            <div class="info-foto">
-                <span>${foto.user.name}</span>
-                <button class="btnFavorito" data-id="${foto.id}" aria-label="Añadir a favoritos">🤍</button>
-            </div>
-        `;
+        const imgtarjeta = document.createElement("img");
+        imgtarjeta.src = foto.urls.small;
+        imgtarjeta.alt = foto.alt;
 
+        //creamos el bloque contenedor para la información texto
+        const divInfo = document.createElement("div");
+        divInfo.classList.add("tarjeta-info");
+
+        const boton = document.createElement("button");
+        boton.classList.add("btnFavorito");
+        boton.id = foto.id
+        boton.textContent = "🤍"
+
+        divInfo.append(boton);
+        tarjeta.append(imgtarjeta, divInfo);
         galeriaResultados.append(tarjeta);
+
         //console.log(tarjeta)
     });
 };
@@ -123,16 +130,14 @@ botonesCategoria.forEach((boton) => {
     });
 });
 
-
 // FAVORITO 
 //EVENTO
 document.addEventListener("click", (ev) => {
     if (ev.target.matches("button.btnFavorito")) {
         const fav = ev.target.id; //lo identifica 
         //ver que necesita recoeger la funcion 
-        console.log(fav);
+        //console.log(ev.target);
         alternarBtnFavorito(fav);
-        colorCorazonFavorito();
     };
 });
 //FUNCIONES
@@ -143,41 +148,38 @@ const actualizarFavoritosLocalStorage = () => {
 };
 
 //funcion para cargarlo 
-const subirFavoritosLocalStorage = () => {
+const traerFavoritosLocalStorage = () => {
     const almacenarFavoritos = localStorage.getItem("favoritos");
     if (almacenarFavoritos) {     //si existen dalos...
         favoritos = JSON.parse(almacenarFavoritos); //... almacenar en el local 
-        colorCorazonFavorito();
     }
 };
 const alternarBtnFavorito = (fav) => {
     //buscar el indice de los favoritos 
-    const verificarSiExiste = favoritos.find(element => element.id === fav.id) //se conecta con el evento
-
+    const verificarSiExiste = favoritos.find(element => element.id === fav) //se conecta con el evento
+    console.log(fav)
     //si no se encontro se pone y si se encuentra se quita 
-    if (verificarSiExiste !== -1) {
+    if (verificarSiExiste) {
         favoritos.splice(verificarSiExiste, 1);
         actualizarFavoritosLocalStorage();
+        console.log(favoritos)
     } else {
         favoritos.push(fav);
         actualizarFavoritosLocalStorage();
+         console.log(favoritos)
     }
-colorCorazonFavorito(),
-contadorFavoritos.textContent = favoritos.length;
+    colorCorazonFavorito();
+    contadorFavoritos.textContent = favoritos.length;
 };
 const colorCorazonFavorito = () => {
     const btnFavorito = document.querySelectorAll(".btnFavorito");
     btnFavorito.forEach(boton => {
-        const idFoto = boton.dataset.id;
+        const idFoto = boton.id;
         const esFavorito = favoritos.some( // si al menos un elemento cumple
             fav => fav.id === idFoto
         );
         boton.classList.toggle("favActive", esFavorito)
     })
-};
-const pintarFavoritos = () => {
-    const arrayLocal = actualizarFavoritosLocalStorage();
-
 };
 
 
@@ -352,11 +354,11 @@ botonesCategoria.forEach((boton) => {
 });
 
 
-/* Funcion que va a recorrer los botones de categorías y va mostrar 1 imagen de cada nicho en la carga inicial de la pagina. */
+/* 6-. Funcion que va a recorrer los botones de categorías y va mostrar 1 imagen de cada nicho en la carga inicial de la pagina. */
 
 const pintarImagenesPortada = () => {
     // Quitamos las imagenes anteriores si la funcion se vuelve a ejecutar.
-    contenedorPortadas.innerHTML = "";
+    // contenedorPortadas.innerHTML = "";
 
     // Recorremos los botones. Cada vuelta corresponde a una categoría.
     botonesCategoria.forEach(async (button) => {
@@ -383,142 +385,19 @@ const pintarImagenesPortada = () => {
         // console.log(objetoImagenAleatoria.urls.raw)
 
 
-        // Creamos el div (tarjeta) para poder meter texto debajo de cada imagen.
-        const tarjetaImagenPortada = document.createElement("DIV");
-        //tarjetaImagenPortada.classList.add("tarjeta"); Confirmar con CSS si la tarjeta necesita clase.
-
         // Creamos la etiqueta <img> y le damos sus atributos.
         const imagenHTML = document.createElement("IMG");
         // imagenHTML.classList.add("imagenPortada"); Confirmar con CSS si la imagen necesita clase.
+
         // Damos atributos src y alt por las propiedades de el objetoImagenAleatoria (visto en consola)
         imagenHTML.src = objetoImagenAleatoria.urls.small;
         // Si el objetoImagenAleatoria no tiene alt ----- `Portada de ${nombreCategoria}`
         imagenHTML.alt = objetoImagenAleatoria.alt_description || `Portada de ${nombreCategoria}`;
 
-        // Creamos el texto de la categoría para ponerlo debajo de la imagen.
-        const textoCategoria = document.createElement("P");
-        textoCategoria.textContent = button.textContent;
-
-        // Metemos la imagen y el texto dentro de la tarjeta.
-        tarjetaImagenPortada.append(imagenHTML, textoCategoria);
-        // Añadimos la tarjeta al contenedor común de portadas.
-        contenedorPortadas.append(tarjetaImagenPortada);
+        // Metemos la imagen dentro de cada button.
+        button.append(imagenHTML);
     });
 };
 
 // Ejecutamos la función para mostrar las portadas.
 pintarImagenesPortada();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

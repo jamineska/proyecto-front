@@ -185,6 +185,7 @@ function alternarBtnFavorito(fav) {
         actualizarFavoritosLocalStorage();
     }
 contadorFavoritos.textContent = favoritos.length;
+contadorFavoritos.textContent = favoritos.length;
 };
 const colorCorazonFavorito = () => {
     const btnFavorito = document.querySelectorAll(".btnFavorito");
@@ -200,11 +201,11 @@ const colorCorazonFavorito = () => {
 }
 //capturar elementos de la seccion favoritos 
 //ej.: .cointeinerListaFavoritos / .listFavoritos 
-// const carpertaFavoritos = () => { 
-//     listaFavoritos.innetHTML = "";
-//     favoritos.forEach(fav => {
-//         const favoriteCard = document.createElement("DIV");
-//         favoriteCard = classList.add("cardFavoritos")
+/*const carpertaFavoritos = () => { 
+    listaFavoritos.innetHTML = "";
+    favoritos.forEach(fav => {
+        const favoriteCard = document.createElement("DIV");
+        favoriteCard = classList.add("cardFavoritos")
 
 //         const titleFavoritos = document.createElement("P");
 //         titleFavoritos.classList.add("tituloFavoritos");//se le da una clase a ese parrafo
@@ -213,7 +214,8 @@ const colorCorazonFavorito = () => {
 
 //     })
 
-// };
+};
+*/
 
 //(rama: jamile) (●'◡'●).
 

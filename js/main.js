@@ -186,7 +186,7 @@ function alternarBtnFavorito(fav) {
         favoritos.push(fav);
         actualizarFavoritosLocalStorage();
     }
-// contadorFavoritos.textContent = favoritos.length;
+ contadorFavoritos.textContent = favoritos.length;
 };
 const colorCorazonFavorito = () => {
     const btnFavorito = document.querySelectorAll(".btnFavorito");
@@ -201,8 +201,8 @@ const colorCorazonFavorito = () => {
     })
 }
 //capturar elementos de la seccion favoritos 
-//ej.: .cointeinerListaFavoritos / .listFavoritos 
-const carpertaFavoritos = () => { 
+//ej.: .conteinerListaFavoritos / .listFavoritos 
+/*const carpetaFavoritos = () => { 
     listaFavoritos.innetHTML = "";
     favoritos.forEach(fav => {
         const favoriteCard = document.createElement("DIV");
@@ -214,8 +214,8 @@ const carpertaFavoritos = () => {
         favoriteCard.append(titleFavoritos)
 
     })
+}; */
 
-};
 
 //(rama: jamile) (●'◡'●).
 

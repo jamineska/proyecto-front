@@ -1,6 +1,15 @@
 /* =========================================================
-   CSS BASE (mobile first) - solo estructura, sin colores
+   CSS BASE (mobile first) + un poquito de estilo museo
    ========================================================= */
+
+/* ===== VARIABLES DE COLOR ===== */
+:root {
+    --fondo: #FAFAF7;
+    --texto: #1A1A1A;
+    --texto-suave: #77746b;
+    --acento: #E4572E;
+}
+
 
 /* ===== RESET ===== */
 * {
@@ -17,13 +26,81 @@
 img {
     display: block;
     max-width: 100%;
+    padding: 1rem;
+    border: 1px solid black;
+}
+
+body {
+    background-color: var(--fondo);
+    color: var(--texto);
+    font-family: Georgia, "Times New Roman", serif;
+    margin: 1rem;
+    min-height: 100vh;
 }
 
 
 /* ===== CABECERA ===== */
+header {
+    text-align: center;
+    padding: 1rem;
+    border-bottom: 1px solid #d9d6cd;
+}
+
+h1 {
+    font-size: 1rem;
+    font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: 0.8rem;
+}
+
+/* Botones del menú: sin aspecto de botón */
 header nav {
     display: flex;
-    gap: 0.5rem;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+header nav button {
+    -webkit-appearance: none;
+    appearance: none;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+    font-family: inherit;
+    font-size: 0.9rem;
+    color: var(--texto);
+    padding-bottom: 2px;
+    cursor: pointer;
+}
+
+#boton-inicio {
+    border-bottom-color: var(--acento);
+}
+
+
+/* ===== CATEGORÍAS ===== */
+.boton-categoria {
+    -webkit-appearance: none;
+    appearance: none;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--texto-suave);
+    padding-bottom: 4px;
+    margin-right: 1rem;
+    cursor: pointer;
+    
+}
+
+/* La clase .activa la pone el JS al pulsar una categoría */
+.boton-categoria.activa {
+    border-bottom-color: var(--acento);
+    color: var(--texto);
 }
 
 
@@ -34,6 +111,20 @@ header nav {
     gap: 0.5rem;
 }
 
+input {
+    border: none;
+    outline: none;
+    background: transparent;
+    margin-top: 1rem;
+    border-bottom: 1px solid black;
+    padding-bottom: 6px;
+
+}
+button {
+    border: none;
+    outline: none;
+    background: transparent;
+}
 
 /* ===== GALERÍAS (resultados y favoritos) ===== */
 /* En móvil: una sola columna */

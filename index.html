@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galería de imágenes</title>
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.css" integrity="sha512-x9WwyMYBnlXMNQ6kQ/Lyzu1NqIhLQKL5Oq6xByfXuRj7s9CskyCbLv/1IjqzJmXwFXWr0ov6jBV7Qbc0hh9nHg==" crossorigin="anonymous" referrerpolicy="no-referrer">
 
 </head>
 
@@ -28,7 +29,7 @@
 
             <!-- Las 3 categorías -->
             <section>
-                <h2>Categorías</h2>
+                
                 <button class="boton-categoria" data-categoria="nature">Naturaleza</button>
                 <!-- el valor de data-categoria es la palabra que se buscará en Unsplash -->
                 <button class="boton-categoria" data-categoria="technology">Tecnología</button>
@@ -37,9 +38,9 @@
 
             <!-- Buscador y filtro de orientación -->
             <section>
-                <h2>Buscar imágenes</h2>
+                
                 <form id="formulario-busqueda" novalidate>
-                    <input type="text" id="campo-busqueda" placeholder="¡Busquemos algo interesante!">
+                    <input type="text" id="campo-busqueda"  placeholder="¡Busquemos algo interesante!" >
                     <p id="mensaje-error-busqueda"></p>
 
                     <label for="selector-orientacion">Orientación</label>
@@ -50,13 +51,13 @@
                         <option value="landscape">Horizontal</option>
                     </select>
 
-                    <button>Buscar</button>
+                    <button><i class="fa-solid fa-magnifying-glass"></i></button>
                 </form>
             </section>
 
             <!-- Resultados y paginación -->
             <section>
-                <h2>Resultados</h2>
+                
                 <p id="mensaje-resultados"></p>
                 <div id="galeria-resultados"></div>
 

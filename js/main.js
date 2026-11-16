@@ -84,8 +84,8 @@ const pintarGaleria = (fotos) => {
 
         const boton = document.createElement("button");
         boton.classList.add("btnFavorito");
-        boton.id = foto.id
-        boton.textContent = "🤍"
+        boton.id = foto.id;
+        boton.textContent = "🤍";
 
         divInfo.append(boton);
         tarjeta.append(imgtarjeta, divInfo);
@@ -131,17 +131,16 @@ botonesCategoria.forEach((boton) => {
 });
 
 // FAVORITO 
+let favoritos = [];
 //EVENTO
 document.addEventListener("click", (ev) => {
     if (ev.target.matches("button.btnFavorito")) {
         const fav = ev.target.id; //lo identifica 
-        //ver que necesita recoeger la funcion 
-        //console.log(ev.target);
+        console.log(ev.target);
         alternarBtnFavorito(fav);
     };
 });
 //FUNCIONES
-let favoritos = [];
 //funcion para almacenarlo
 const actualizarFavoritosLocalStorage = () => {
     localStorage.setItem("favoritos", JSON.stringify(favoritos));
@@ -156,18 +155,15 @@ const traerFavoritosLocalStorage = () => {
 };
 const alternarBtnFavorito = (fav) => {
     //buscar el indice de los favoritos 
-    const verificarSiExiste = favoritos.find(element => element.id === fav) //se conecta con el evento
-    console.log(fav)
+    const verificarSiExiste = favoritos.includes(fav);
+    //si incluye el id(es un string)
     //si no se encontro se pone y si se encuentra se quita 
     if (verificarSiExiste) {
-        favoritos.splice(verificarSiExiste, 1);
-        actualizarFavoritosLocalStorage();
-        console.log(favoritos)
+        favoritos = favoritos.filter(element => element !== fav);
     } else {
         favoritos.push(fav);
-        actualizarFavoritosLocalStorage();
-         console.log(favoritos)
     }
+    actualizarFavoritosLocalStorage();
     colorCorazonFavorito();
     contadorFavoritos.textContent = favoritos.length;
 };
@@ -176,12 +172,14 @@ const colorCorazonFavorito = () => {
     btnFavorito.forEach(boton => {
         const idFoto = boton.id;
         const esFavorito = favoritos.some( // si al menos un elemento cumple
-            fav => fav.id === idFoto
+            fav => fav === idFoto
         );
         boton.classList.toggle("favActive", esFavorito)
     })
 };
-
+traerFavoritosLocalStorage();
+colorCorazonFavorito();
+contadorFavoritos.textContent = favoritos.length;
 
 //(rama: jamile) (●'◡'●).
 

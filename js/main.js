@@ -186,11 +186,36 @@ function alternarBtnFavorito(fav) {
         favoritos.push(fav);
         actualizarFavoritosLocalStorage();
     }
+// contadorFavoritos.textContent = favoritos.length;
 };
+const colorCorazonFavorito = () => {
+    const btnFavorito = document.querySelectorAll(".btnFavorito");
+    btnFavorito.forEach(boton => {
+        const idFoto = boton.dataset.id;
+        const esFavorito = favoritos.some ( //some es metodo de array 
+            fav => fav.id === idFoto
+        );
+        boton.classList.toggle("favActive", esFavorito)
+        
+        console.log(esFavorito)
+    })
+}
+//capturar elementos de la seccion favoritos 
+//ej.: .cointeinerListaFavoritos / .listFavoritos 
+const carpertaFavoritos = () => { 
+    listaFavoritos.innetHTML = "";
+    favoritos.forEach(fav => {
+        const favoriteCard = document.createElement("DIV");
+        favoriteCard = classList.add("cardFavoritos")
 
+        const titleFavoritos = document.createElement("P");
+        titleFavoritos.classList.add("tituloFavoritos");//se le da una clase a ese parrafo
+        titleFavoritos.textContent = fav.title; //se le da un contenido
+        favoriteCard.append(titleFavoritos)
 
-//obtenerFavoritosLocal()
-//pintarFavoritos()
+    })
+
+};
 
 //(rama: jamile) (●'◡'●).
 

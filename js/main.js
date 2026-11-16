@@ -63,7 +63,6 @@ const llamarApi = async (busqueda, pagina = 1) => {
 
 //Parte visual y dinámico de la página principal de la aplicación.
 /* 4- Pintar Categorías, conectar con la API, recibir y almacenar las fotografías, Mostrar las tres categorías de imagenes. */
-
 // Función para pintar las fotos en #galeria-resultados
 const pintarGaleria = (fotos) => {
     galeriaResultados.innerHTML = "";
@@ -187,6 +186,7 @@ function alternarBtnFavorito(fav) {
         actualizarFavoritosLocalStorage();
     }
 contadorFavoritos.textContent = favoritos.length;
+contadorFavoritos.textContent = favoritos.length;
 };
 const colorCorazonFavorito = () => {
     const btnFavorito = document.querySelectorAll(".btnFavorito");
@@ -202,11 +202,11 @@ const colorCorazonFavorito = () => {
 }
 //capturar elementos de la seccion favoritos 
 //ej.: .cointeinerListaFavoritos / .listFavoritos 
-// const carpertaFavoritos = () => { 
-//     listaFavoritos.innetHTML = "";
-//     favoritos.forEach(fav => {
-//         const favoriteCard = document.createElement("DIV");
-//         favoriteCard = classList.add("cardFavoritos")
+/*const carpertaFavoritos = () => { 
+    listaFavoritos.innetHTML = "";
+    favoritos.forEach(fav => {
+        const favoriteCard = document.createElement("DIV");
+        favoriteCard = classList.add("cardFavoritos")
 
 //         const titleFavoritos = document.createElement("P");
 //         titleFavoritos.classList.add("tituloFavoritos");//se le da una clase a ese parrafo
@@ -215,7 +215,8 @@ const colorCorazonFavorito = () => {
 
 //     })
 
-// };
+};
+*/
 
 //(rama: jamile) (●'◡'●).
 

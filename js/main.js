@@ -388,7 +388,7 @@ botonesCategoria.forEach((boton) => {
 });
 
 
-/* Funcion que va a recorrer los botones de categorías y va mostrar 1 imagen de cada nicho en la carga inicial de la pagina. */
+/* 6-. Funcion que va a recorrer los botones de categorías y va mostrar 1 imagen de cada nicho en la carga inicial de la pagina. */
 
 const pintarImagenesPortada = () => {
     // Quitamos las imagenes anteriores si la funcion se vuelve a ejecutar.

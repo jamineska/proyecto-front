@@ -56,10 +56,6 @@ const llamarApi = async (busqueda, pagina = 1) => {
     }
 };
 
-//llamarApi("nature").then(fotos => console.log(fotos)); //aquí vamos poniendo pruebas para ver que funciona
-//llamarApi("agua").then(fotos => console.log(fotos));
-//llamarApi("music").then(fotos => console.log(fotos));
-
 
 //Parte visual y dinámico de la página principal de la aplicación.
 /* 4- Pintar Categorías, conectar con la API, recibir y almacenar las fotografías, Mostrar las tres categorías de imagenes. */
@@ -90,7 +86,6 @@ const pintarGaleria = (fotos) => {
         galeriaResultados.append(tarjeta);
         //console.log(tarjeta)
     });
-    capturarBotonesFavoritos();
 };
 
 // Función para cargar las fotos de una categoría
@@ -129,40 +124,21 @@ botonesCategoria.forEach((boton) => {
 });
 
 
-// Carga inicial al entrar en la app (primera categoría por defecto: "nature")
-if (botonesCategoria.length > 0) {
-    botonesCategoria[0].classList.add("activa");
-    cargarCategoria(botonesCategoria[0].dataset.categoria);
-};
-
-
 // FAVORITO 
-//se realiza un bucle para que se pinte a toda la coleccion
-//lo meto dentro de una funcion para poder ejecutar el query dentro 
-function capturarBotonesFavoritos() {
-    const btnFavorito = document.querySelectorAll(".btnFavorito");
-    btnFavorito.forEach(button => {
-        button.addEventListener("click", (ev) => {
-            //console.log(1);
-            const cardFoto = ev.target.closest(".tarjeta-foto");
-            const fav = {
-                id: button.dataset.id,
-                name: cardFoto.querySelector("span").textContent,
-                src:  cardFoto.querySelector("img").src,
-                alt:  cardFoto.querySelector("img").alt,
-            };
-            alternarBtnFavorito(fav);
-            console.log(fav);
-            colorCorazonFavorito();
-        });
-    });
-};
-
-//FUNCIONES FAVORITOS 
-//CARGAR LOS DATOS EN EL LOCALSTORAGE DEL ARRAY DE FAVORITOS 
+//EVENTO
+document.addEventListener("click", (ev) => {
+    if (ev.target.matches("button.btnFavorito")) {
+        const fav = ev.target.id; //lo identifica 
+        //ver que necesita recoeger la funcion 
+        console.log(fav);
+        alternarBtnFavorito(fav);
+        colorCorazonFavorito();
+    };
+});
+//FUNCIONES
 let favoritos = [];
 //funcion para almacenarlo
-const actualizarFavoritosLocalStorage = () => { //declarar funcion 
+const actualizarFavoritosLocalStorage = () => {
     localStorage.setItem("favoritos", JSON.stringify(favoritos));
 };
 
@@ -174,48 +150,35 @@ const subirFavoritosLocalStorage = () => {
         colorCorazonFavorito();
     }
 };
-function alternarBtnFavorito(fav) {
+const alternarBtnFavorito = (fav) => {
     //buscar el indice de los favoritos 
-    const index = favoritos.findIndex(element => element.id === fav.id) //se conecta con el evento
+    const verificarSiExiste = favoritos.find(element => element.id === fav.id) //se conecta con el evento
 
     //si no se encontro se pone y si se encuentra se quita 
-    if (index !== -1) {
-        favoritos.splice(index, 1);
+    if (verificarSiExiste !== -1) {
+        favoritos.splice(verificarSiExiste, 1);
         actualizarFavoritosLocalStorage();
     } else {
         favoritos.push(fav);
         actualizarFavoritosLocalStorage();
     }
- contadorFavoritos.textContent = favoritos.length;
+colorCorazonFavorito(),
 contadorFavoritos.textContent = favoritos.length;
 };
 const colorCorazonFavorito = () => {
     const btnFavorito = document.querySelectorAll(".btnFavorito");
     btnFavorito.forEach(boton => {
         const idFoto = boton.dataset.id;
-        const esFavorito = favoritos.some ( //some es metodo de array 
+        const esFavorito = favoritos.some( // si al menos un elemento cumple
             fav => fav.id === idFoto
         );
         boton.classList.toggle("favActive", esFavorito)
-        
-        console.log(esFavorito)
     })
-}
-//capturar elementos de la seccion favoritos 
-//ej.: .conteinerListaFavoritos / .listFavoritos 
-/*const carpetaFavoritos = () => { 
-    listaFavoritos.innetHTML = "";
-    favoritos.forEach(fav => {
-        const favoriteCard = document.createElement("DIV");
-        favoriteCard = classList.add("cardFavoritos")
+};
+const pintarFavoritos = () => {
+    const arrayLocal = actualizarFavoritosLocalStorage();
 
-//         const titleFavoritos = document.createElement("P");
-//         titleFavoritos.classList.add("tituloFavoritos");//se le da una clase a ese parrafo
-//         titleFavoritos.textContent = fav.title; //se le da un contenido
-//         favoriteCard.append(titleFavoritos)
-
-    })
-}; */
+};
 
 
 //(rama: jamile) (●'◡'●).
@@ -241,7 +204,7 @@ const llamarApiConOrientacion = async (busqueda, pagina = 1, orientacion = "") =
     try {
         const terminoSeguro = busqueda && busqueda.trim() !== "" ? busqueda.trim() : "nature";
         let urlPeticion = `${url_base}?query=${encodeURIComponent(busqueda)}&page=${pagina}&per_page=12`;
-        
+
         const valorLimpio = orientacion.toLowerCase().trim();
         let orientacionApi = "";
 
@@ -329,7 +292,7 @@ const filtrarPorOrientacion = async () => {
     const botonActivo = document.querySelector(".boton-categoria.activa, .boton-categoria.active");
     if (botonActivo) {
         busquedaActual = botonActivo.dataset.categoria || botonActivo.textContent.trim();
-    }else if (campoBusqueda.value.trim() !== "") {
+    } else if (campoBusqueda.value.trim() !== "") {
         busquedaActual = campoBusqueda.value.trim();
     }
 
@@ -352,11 +315,11 @@ const cambiarPagina = async (nuevaPagina) => {
     busquedaActual = obtenerTerminoActual();
     paginaActual = nuevaPagina;
 
-    const orientacion = selectorOrientacion? selectorOrientacion.value: "";
+    const orientacion = selectorOrientacion ? selectorOrientacion.value : "";
     mensajeResultados.textContent = "Cargando página...";
 
     const resultado = await llamarApiConOrientacion(busquedaActual, paginaActual, orientacion);
-    totalPaginas = Number (resultado.total) || 1; /* el number es para convertir el texto en numero. y el || 1 es para proteger contra errores. En caso de un error, no devolva un NaN*/
+    totalPaginas = Number(resultado.total) || 1; /* el number es para convertir el texto en numero. y el || 1 es para proteger contra errores. En caso de un error, no devolva un NaN*/
 
     pintarGaleria(resultado.fotos);
     actualizarInterfazPaginacion();
@@ -445,3 +408,117 @@ const pintarImagenesPortada = () => {
 
 // Ejecutamos la función para mostrar las portadas.
 pintarImagenesPortada();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

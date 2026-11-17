@@ -132,6 +132,7 @@ const cargarCategoria = async (categoria) => {
 };
 
 // Eventos click para los 3 botones de categoría (.boton-categoria)
+/* 
 botonesCategoria.forEach((boton) => {
     boton.addEventListener("click", () => {
         const categoriaSeleccionada = boton.dataset.categoria; // 'nature', 'technology' o 'people'
@@ -144,6 +145,8 @@ botonesCategoria.forEach((boton) => {
         cargarCategoria(categoriaSeleccionada);
     });
 });
+*/
+
 
 // FAVORITO 
 let favoritos = [];
@@ -360,7 +363,7 @@ botonPaginaSiguiente.addEventListener("click", () => {
 botonesCategoria.forEach((boton) => {
     boton.addEventListener("click", async () => {
         paginaActual = 1;
-        busquedaActual = boton.dataset.categoria || boton.dataset.category || boton.textContent.trim();
+        busquedaActual = boton.dataset.categoria || boton.textContent.trim();
         const orientacion = selectorOrientacion ? selectorOrientacion.value : "";
 
         const resultado = await llamarApiConOrientacion(busquedaActual, 1, orientacion);

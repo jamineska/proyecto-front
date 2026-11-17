@@ -1,3 +1,4 @@
+
 //VARIABLES
 const url_key = 'S0SPXGCuvujnz1b_8l2o4UmZKLDVQOBIzzHw201v2Vc'; //variable para llamar a la API
 const url_base = 'https://api.unsplash.com/search/photos'
@@ -7,7 +8,7 @@ const imagenesPorCategoria = {}; //objeto que almacena todas las imagenes de cad
 const botonInicio = document.querySelector("#boton-inicio");
 const botonFavoritos = document.querySelector("#boton-favoritos");
 const contadorFavoritos = document.querySelector("#contador-favoritos");
-const botonesCategoria = document.querySelectorAll(".boton-categoria");
+const botonesCategoriaInicio = document.querySelectorAll(".boton-categoria");
 const formularioBusqueda = document.querySelector("#formulario-busqueda");
 const campoBusqueda = document.querySelector("#campo-busqueda");
 const mensajeErrorBusqueda = document.querySelector("#mensaje-error-busqueda");
@@ -24,7 +25,11 @@ const galeriaFavoritos = document.querySelector("#galeria-favoritos");
 
 
 
-
+//DECLARACIONES
+let busquedaActual = "nature";
+let paginaActual = 1;
+let totalPaginas = 10; // Iniciamos mayor que 1 para permitir avanzar desde la primera carga
+let favoritos = [];
 
 
 //EVENTOS
@@ -32,21 +37,53 @@ botonInicio.addEventListener('click', () => {
     const recargarPaginaInicio = () => {
         location.reload()
     }
-    return recargarPaginaInicio()
-})
+    recargarPaginaInicio() //el evento no retorna nada 
+});
+// Eventos click para los 3 botones de categoría (.boton-categoria)
+botonesCategoriaInicio.forEach((boton) => {
+    boton.addEventListener("click", () => {
+        const categoriaSeleccionada = boton.dataset.categoria; // 'nature', 'technology' o 'people'
 
+        // Marcamos visualmente el botón activo
+        botonesCategoriaInicio.forEach((btn) => btn.classList.remove("activa"));
+        boton.classList.add("activa");
 
-botonFavoritos.addEventListener('click', () => {
+        // Cargamos y pintamos sus fotos
+        cargarCategoria(categoriaSeleccionada);
+    });
+});
+/*document.addEventListener("click", (ev) => {
+    if (ev.target.matches("button.boton-categoria")) {
+        const categoriaSeleccionada = botonesCategoriaInicio.dataset.categoria; // 'nature', 'technology' o 'people'
+        // Marcamos visualmente el botón activo
+
+        forEach((btn) => btn.classList.remove("activa"));
+        botonesCategoriaInicio.classList.add("activa");
+
+    // Cargamos y pintamos sus fotos
+    cargarCategoria(categoriaSeleccionada);
+    
+    };
+});
+/*
+document.addEventListener("click", (ev) => {
+    if (ev.target.matches("button.btnFavorito")) {
+        const fav = ev.target.id; //lo identifica 
+        //console.log(ev.target);
+        alternarBtnFavorito(fav);
+        actualizarFavoritosLocalStorage()
+    };
+});
+/*botonFavoritos.addEventListener('click', () => {
     pintarGaleriaFavoritos()
-})
-// document.addEventListener('click', (ev)=>{
-//     if(ev.target.id=="boton-favoritos") {
-//         pintarGaleriaFavoritos();
-//     }
-// })
+})*/
+document.addEventListener('click', (ev) => {
+    if (ev.target.id == "boton-favoritos") {
+        pintarGaleriaFavoritos();
+    }
+});
 
 //FUNCIONES
-
 /*1- Llamar a la API.*/
 
 const llamarApi = async (busqueda, pagina = 1) => {
@@ -58,7 +95,6 @@ const llamarApi = async (busqueda, pagina = 1) => {
                 Authorization: `Client-ID ${url_key}`
             }
         });
-
         if (!response.ok) {
             throw new Error(response.status);
         }
@@ -70,8 +106,6 @@ const llamarApi = async (busqueda, pagina = 1) => {
         return [];
     }
 };
-
-
 //Parte visual y dinámico de la página principal de la aplicación.
 /* 4- Pintar Categorías, conectar con la API, recibir y almacenar las fotografías, Mostrar las tres categorías de imagenes. */
 // Función para pintar las fotos en #galeria-resultados
@@ -82,7 +116,6 @@ const pintarGaleria = (fotos) => {
         mensajeResultados.textContent = "No se encontraron imágenes para esta categoría.";
         return;
     }
-
     mensajeResultados.textContent = `Mostrando ${fotos.length} imágenes`;
 
     fotos.forEach((foto) => {
@@ -119,7 +152,6 @@ const cargarCategoria = async (categoria) => {
         pintarGaleria(imagenesPorCategoria[categoria]);
         return;
     }
-
     // Si es la primera vez, llamamos a la función llamarApi 
     const fotos = await llamarApi(categoria, 1);
 
@@ -131,32 +163,6 @@ const cargarCategoria = async (categoria) => {
     }
 };
 
-// Eventos click para los 3 botones de categoría (.boton-categoria)
-botonesCategoria.forEach((boton) => {
-    boton.addEventListener("click", () => {
-        const categoriaSeleccionada = boton.dataset.categoria; // 'nature', 'technology' o 'people'
-
-        // Marcamos visualmente el botón activo
-        botonesCategoria.forEach((btn) => btn.classList.remove("activa"));
-        boton.classList.add("activa");
-
-        // Cargamos y pintamos sus fotos
-        cargarCategoria(categoriaSeleccionada);
-    });
-});
-
-// FAVORITO 
-let favoritos = [];
-//EVENTO
-document.addEventListener("click", (ev) => {
-    if (ev.target.matches("button.btnFavorito")) {
-        const fav = ev.target.id; //lo identifica 
-        console.log(ev.target);
-        alternarBtnFavorito(fav);
-        actualizarFavoritosLocalStorage()
-    };
-});
-//FUNCIONES
 //funcion para almacenarlo
 const actualizarFavoritosLocalStorage = () => {
     localStorage.setItem("favoritos", JSON.stringify(favoritos));
@@ -191,19 +197,9 @@ const colorCorazonFavorito = () => {
             fav => fav === idFoto
         );
         boton.classList.toggle("favActive", esFavorito)
-
-        console.log(esFavorito)
     })
 };
-traerFavoritosLocalStorage();
-colorCorazonFavorito();
-contadorFavoritos.textContent = favoritos.length;
-
 //(rama: jamile) (●'◡'●).
-
-let busquedaActual = "nature";
-let paginaActual = 1;
-let totalPaginas = 10; // Iniciamos mayor que 1 para permitir avanzar desde la primera carga
 
 /* Función segura para leer la búsqueda o categoría activa sin devolver 'undefined' */
 const obtenerTerminoActual = () => {
@@ -265,7 +261,6 @@ const actualizarInterfazPaginacion = () => {
     botonPaginaSiguiente.disabled = paginaActual >= totalPaginas || totalPaginas === 0;
 };
 
-
 /* 5- Buscador. 
 -Obtener texto del buscador(categoria). 
 -Realizar la busqueda en API reiniciando a la página 1. */
@@ -285,7 +280,7 @@ const buscarPorPalabra = async (event) => {
     mensajeResultados.textContent = "Cargando imágenes...";
 
     // Quitamos la marca activa de las categorías al hacer una búsqueda manual
-    botonesCategoria.forEach((btn) => btn.classList.remove("activa"));
+    botonesCategoriaInicio.forEach((btn) => btn.classList.remove("activa"));
 
     busquedaActual = textoBusqueda;
     paginaActual = 1;
@@ -298,8 +293,6 @@ const buscarPorPalabra = async (event) => {
     pintarGaleria(resultados.fotos);
     actualizarInterfazPaginacion();
 };
-
-formularioBusqueda.addEventListener("submit", buscarPorPalabra);
 
 /* 6- Filtrar Fotos. -Filtrar por orientación: Imagenes horizontales, verticales y todas. */
 // Guardamos el término actual para que el filtro de orientación sepa qué palabra está buscando
@@ -326,7 +319,6 @@ const filtrarPorOrientacion = async () => {
     actualizarInterfazPaginacion();
 };
 
-selectorOrientacion.addEventListener("change", filtrarPorOrientacion);
 
 //7. Paginación: implementar paginación para poder navegar entre los resultados cuando haya muchas imágenes.
 const cambiarPagina = async (nuevaPagina) => {
@@ -356,19 +348,6 @@ botonPaginaSiguiente.addEventListener("click", () => {
         cambiarPagina(paginaActual + 1);
     }
 });
-/* sincronización de botones */
-botonesCategoria.forEach((boton) => {
-    boton.addEventListener("click", async () => {
-        paginaActual = 1;
-        busquedaActual = boton.dataset.categoria || boton.dataset.category || boton.textContent.trim();
-        const orientacion = selectorOrientacion ? selectorOrientacion.value : "";
-
-        const resultado = await llamarApiConOrientacion(busquedaActual, 1, orientacion);
-        totalPaginas = Number(resultado.total) || 1;
-        actualizarInterfazPaginacion();
-    });
-});
-
 
 /* 6-. Funcion que va a recorrer los botones de categorías y va mostrar 1 imagen de cada nicho en la carga inicial de la pagina. */
 
@@ -377,7 +356,7 @@ const pintarImagenesPortada = () => {
     // contenedorPortadas.innerHTML = "";
 
     // Recorremos los botones. Cada vuelta corresponde a una categoría.
-    botonesCategoria.forEach(async (button) => {
+    botonesCategoriaInicio.forEach(async (button) => {
         // Leemos el valor de data-categoria, por ejemplo: "nature". 
         // dataset lo que permite es leer atributos que empiezan por 'data-'
         const nombreCategoria = button.dataset.categoria;
@@ -415,11 +394,6 @@ const pintarImagenesPortada = () => {
     });
 };
 
-// Ejecutamos la función para mostrar las portadas.
-pintarImagenesPortada();
-
-
-
 //Funcion para buscar imagenes por su id (necesitamos para pintarGaleriaFavoritos)
 // console.log(imagenesPorCategoria)
 const buscarImagenesporId = (id) => {
@@ -442,7 +416,6 @@ const buscarImagenesporId = (id) => {
     return imagenEncontrada
 }
 
-
 // Funcion para pintar la galeria de favoritos
 const pintarGaleriaFavoritos = () => {
     traerFavoritosLocalStorage();
@@ -459,3 +432,9 @@ const pintarGaleriaFavoritos = () => {
     pintarGaleria(imagenesFav);
 }
 
+traerFavoritosLocalStorage();
+colorCorazonFavorito();
+contadorFavoritos.textContent = favoritos.length;
+formularioBusqueda.addEventListener("submit", buscarPorPalabra);
+selectorOrientacion.addEventListener("change", filtrarPorOrientacion);
+pintarImagenesPortada(); // Ejecutamos la función para mostrar las portadas.

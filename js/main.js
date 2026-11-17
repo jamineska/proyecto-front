@@ -52,7 +52,7 @@ botonesCategoriaInicio.forEach((boton) => {
         cargarCategoria(categoriaSeleccionada);
     });
 });
-/*document.addEventListener("click", (ev) => {
+document.addEventListener("click", (ev) => {
     if (ev.target.matches("button.boton-categoria")) {
         const categoriaSeleccionada = botonesCategoriaInicio.dataset.categoria; // 'nature', 'technology' o 'people'
         // Marcamos visualmente el botón activo
@@ -62,7 +62,6 @@ botonesCategoriaInicio.forEach((boton) => {
 
     // Cargamos y pintamos sus fotos
     cargarCategoria(categoriaSeleccionada);
-    
     };
 });
 /*
@@ -163,6 +162,31 @@ const cargarCategoria = async (categoria) => {
     }
 };
 
+// Eventos click para los 3 botones de categoría (.boton-categoria)
+botonesCategoriaInicio.forEach((boton) => {
+    boton.addEventListener("click", () => {
+        const categoriaSeleccionada = boton.dataset.categoria; // 'nature', 'technology' o 'people'
+
+        // Marcamos visualmente el botón activo
+        botonesCategoria.forEach((btn) => btn.classList.remove("activa"));
+        boton.classList.add("activa");
+
+        // Cargamos y pintamos sus fotos
+        cargarCategoria(categoriaSeleccionada);
+    });
+});
+
+// FAVORITO 
+//EVENTO
+document.addEventListener("click", (ev) => {
+    if (ev.target.matches("button.btnFavorito")) {
+        const fav = ev.target.id; //lo identifica 
+        console.log(ev.target);
+        alternarBtnFavorito(fav);
+        actualizarFavoritosLocalStorage()
+    };
+});
+//FUNCIONES
 //funcion para almacenarlo
 const actualizarFavoritosLocalStorage = () => {
     localStorage.setItem("favoritos", JSON.stringify(favoritos));
@@ -348,6 +372,19 @@ botonPaginaSiguiente.addEventListener("click", () => {
         cambiarPagina(paginaActual + 1);
     }
 });
+/* sincronización de botones */
+botonesCategoriaInicio.forEach((boton) => {
+    boton.addEventListener("click", async () => {
+        paginaActual = 1;
+        busquedaActual = boton.dataset.categoria || boton.dataset.category || boton.textContent.trim();
+        const orientacion = selectorOrientacion ? selectorOrientacion.value : "";
+
+        const resultado = await llamarApiConOrientacion(busquedaActual, 1, orientacion);
+        totalPaginas = Number(resultado.total) || 1;
+        actualizarInterfazPaginacion();
+    });
+});
+
 
 /* 6-. Funcion que va a recorrer los botones de categorías y va mostrar 1 imagen de cada nicho en la carga inicial de la pagina. */
 
